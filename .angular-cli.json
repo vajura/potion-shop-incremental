@@ -22,7 +22,8 @@
         "styles.scss"
       ],
       "scripts": [
-        "./helpers/keydrown.js"
+        "./helpers/keydrown.js",
+        "./helpers/jquery.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

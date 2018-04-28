@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as createjs from 'createjs-module';
 declare var kd;
+declare var $;
 
 @Component({
   selector: 'app-root',
@@ -27,9 +28,9 @@ export class AppComponent implements OnInit {
       kd.tick();
     }, 25);
 
-    /*this.htmlContainer = $('html');
+    this.htmlContainer = $('html');
     this.mainContainer = $('#main-container');
-    this.uiContainer = $('#ui-container');*/
+    this.uiContainer = $('#ui-container');
     this.mainStage = new createjs.Stage('main-container');
     this.uiStage = new createjs.Stage('ui-container');
   }
