@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as createjs from 'createjs-module';
+import { Game } from '../models/game';
 declare var kd;
 declare var $;
 
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit {
   uiContainer: any;
   uiStage: createjs.Stage;
   mainStage: createjs.Stage;
+  game: Game;
 
   constructor() {
 
@@ -27,11 +29,11 @@ export class AppComponent implements OnInit {
     setInterval(() => {
       kd.tick();
     }, 25);
-
-    this.htmlContainer = $('html');
+    this.game = new Game();
+    /*this.htmlContainer = $('html');
     this.mainContainer = $('#main-container');
     this.uiContainer = $('#ui-container');
     this.mainStage = new createjs.Stage('main-container');
-    this.uiStage = new createjs.Stage('ui-container');
+    this.uiStage = new createjs.Stage('ui-container');*/
   }
 }

@@ -1,25 +1,38 @@
-<div class="container-fluid turner">
-  <div class="row p-2">
-    <div class="col-md-12 p-0">
-      <ngb-tabset>
-        <ngb-tab>
-          <ng-template ngbTabTitle>Garden</ng-template>
-          <ng-template ngbTabContent>
-            fweafwea
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab>
-          <ng-template ngbTabTitle>Shop</ng-template>
-          <ng-template ngbTabContent>
-            fweafweafweaf
-          </ng-template>
-        </ngb-tab>
-      </ngb-tabset>
+<div class="main-size-wrapper p-0 m-0">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 p-0">
+        <ngb-tabset>
+          <ngb-tab>
+            <ng-template ngbTabTitle>Garden</ng-template>
+            <ng-template ngbTabContent>
+              <div class="row pot-row"
+                   *ngFor="let pot of game.pots"
+                   [ngStyle]="{'border': '1px solid ' + pot.color}">
+                <div class="col-md-12 p-0">
+                  <div class="pot-box-description"
+                       [ngStyle]="{'border-right': '1px solid ' + pot.color}">
+                    <div>{{pot.name}}</div>
+                    <div>Total: {{pot.amount}}</div>
+                    <div>Free: {{pot.freePots}}</div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab>
+            <ng-template ngbTabTitle>Shop</ng-template>
+            <ng-template ngbTabContent>
+              <div>TESTdwdw1</div>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+    </div>
+    <div class="row stats-window">
+      <div class="col-md-12">
+        <div>TEST1</div>
+      </div>
     </div>
   </div>
-</div>
-
-<div class="canvas-wrapper">
-  <canvas id="ui-container" class="overlaping-canvas" width="800" height="800"></canvas>
-  <canvas id="main-container" class="overlaping-canvas" width="800" height="800"></canvas>
 </div>

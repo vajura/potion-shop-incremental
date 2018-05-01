@@ -1,7 +1,6 @@
-import { CommonPlantVarInterface } from './common-plant-var';
-import { PlantInterface } from './plant-interface';
+import { CommonInterface } from './common-plant-var';
 
-export interface SeedInterface extends  CommonPlantVarInterface {
+export interface SeedInterface extends CommonInterface {
   timeToGrow: number;
-  plant: PlantInterface;
+  plantName: string;
 }
