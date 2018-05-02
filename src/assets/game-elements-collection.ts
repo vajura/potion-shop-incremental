@@ -11,6 +11,14 @@ export function potGenerator(): PotInterface[] {
       amount: 0,
       freePots: 0,
       plantedSeeds: []
+    },
+    {
+      name: 'Chared pot',
+      tier: 2,
+      color: 'red',
+      amount: 0,
+      freePots: 0,
+      plantedSeeds: []
     }
   ];
 }

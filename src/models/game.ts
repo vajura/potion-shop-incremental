@@ -32,7 +32,6 @@ export class Game {
       this.seedsI[Game.seedCollection[a].name] = a;
     }
     this.pots.push(Game.potCollection[0]);
-    this.pots[0].amount = 4;
     setTimeout(this.gameLoop, 1000);
   }
 

@@ -9,7 +9,6 @@
   min-height: 600px;
   max-height: 600px;
   .standard-text {
-    line-height: 1;
     padding: 1px;
   }
   .stats-window {
@@ -20,14 +19,25 @@
     height: 500px;
     min-height: 500px;
     max-height: 500px;
+    overflow-y: scroll;
   }
   .pot-row {
     margin: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: flex-start;
     .pot-box-description {
       text-align: left;
       width: 150px;
       height: 100px;
     }
+  }
+  .plant-button {
+    margin-left: 50%;
+    transform: translateX(-50%);
   }
 }
 

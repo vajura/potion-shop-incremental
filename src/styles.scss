@@ -1,1 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Oxygen+Mono');
 @import "~bootstrap/dist/css/bootstrap.css";
+
+* {
+  font-size: 12px;
+  line-height: 1.2;
+  font-family: 'Oxygen Mono', monospace;
+}
+.btn, .btn-sm {
+  border-radius: 0;
+}
