@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as createjs from 'createjs-module';
 import { Game } from '../models/game';
 declare var kd;
@@ -8,7 +8,8 @@ declare var $;
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AppComponent implements OnInit {
@@ -21,15 +22,14 @@ export class AppComponent implements OnInit {
   mainStage: createjs.Stage;
   game: Game;
 
-  constructor() {
-
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     setInterval(() => {
       kd.tick();
     }, 25);
-    this.game = new Game();
+    this.game = new Game(this.cdr);
     /*this.htmlContainer = $('html');
     this.mainContainer = $('#main-container');
     this.uiContainer = $('#ui-container');

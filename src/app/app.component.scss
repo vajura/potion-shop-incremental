@@ -1,7 +1,6 @@
 .nav-tabs .nav-link {
   border-radius: 0 !important;
 }
-
 .main-size-wrapper {
   width: 800px;
   min-width: 800px;
@@ -9,6 +8,10 @@
   height: 600px;
   min-height: 600px;
   max-height: 600px;
+  .standard-text {
+    line-height: 1;
+    padding: 1px;
+  }
   .stats-window {
     height: 58px;
     background-color: #DDDDDD;
@@ -21,7 +24,7 @@
   .pot-row {
     margin: 5px;
     .pot-box-description {
-      text-align: center;
+      text-align: left;
       width: 150px;
       height: 100px;
     }

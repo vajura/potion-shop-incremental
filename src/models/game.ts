@@ -2,6 +2,7 @@ import { PotInterface } from './interfaces/pot-interface';
 import { PlantInterface } from './interfaces/plant-interface';
 import { SeedInterface } from './interfaces/seed-interface';
 import { plantGenerator, potGenerator, seedGenerator } from '../assets/game-elements-collection';
+import {ChangeDetectorRef} from '@angular/core';
 
 export class Game {
 
@@ -17,7 +18,7 @@ export class Game {
   public seeds: SeedInterface[] = [];
   public seedsI: any[] = [];
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     Game.potCollection = potGenerator();
     Game.plantCollection = plantGenerator();
     Game.seedCollection = seedGenerator();
@@ -56,6 +57,7 @@ export class Game {
         }
       }
     }
+    this.cdr.markForCheck();
     setTimeout(this.gameLoop, 1000);
   }
 
