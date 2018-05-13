@@ -15,11 +15,72 @@
     height: 58px;
     background-color: #DDDDDD;
   }
+  .panel-background {
+    background-color: #DDDDDD;
+  }
   .tab-pane {
     height: 500px;
     min-height: 500px;
     max-height: 500px;
     overflow-y: scroll;
+  }
+  .wilderness-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: flex-start;
+    .world-map {
+      width: 667px;
+      height: 500px;
+      margin-left: -30px;
+      position: relative;
+      background: url(/assets/images/worldmap.png) no-repeat left top / contain;
+
+      .map-button {
+        position: absolute;
+        transition: 1s;
+        opacity: 0.4;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      .map-button-0 {
+        top: 360px;
+        left: 430px;
+        color: white;
+      }
+      .map-button-0-animation {
+        font-size: 24px;
+        top: 358px;
+        left: 428px;
+        opacity: 1;
+      }
+    }
+    .world-map-menu {
+      height: 500px;
+      width: 146px;
+      .seed-info {
+
+      }
+    }
+  }
+  .info-window-flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: flex-start;
+    .info-window-column {
+      margin-left: 5px;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-content: stretch;
+      align-items: flex-start;
+    }
   }
   .pot-row {
     margin: 5px;
@@ -30,14 +91,21 @@
     align-content: stretch;
     align-items: flex-start;
     .pot-box-description {
+      padding: 1px;
       text-align: left;
       width: 150px;
       height: 100px;
     }
   }
-  .plant-button {
-    margin-left: 50%;
-    transform: translateX(-50%);
+  .plant-button-container {
+    margin-left: 10px;
+    margin-top: 5px;
+    .plant-button {
+      width: 60px;
+      min-width: 60px;
+    }
   }
 }
-
+.text-center {
+  text-align: center;
+}
