@@ -31,7 +31,7 @@ export function wildernessGenerator(): WildernessInterface[] {
       wildSeeds: [
         {
           seedIndex: SeedIndex.RedRoseSeed,
-          chanceToOccur: 100
+          chanceToOccur: 30
         }
       ],
       chanceToGetNothing: 100,
@@ -69,7 +69,7 @@ export function plantGenerator(): PlantInterface[] {
     {
       name: 'Red rose',
       tier: 1,
-      color1: 'red',
+      color1: '#CC4444',
       color2: 'black',
       seedIndex: SeedIndex.RedRoseSeed,
       amount: 0
@@ -82,7 +82,7 @@ export function seedGenerator(): SeedInterface[] {
     {
       name: 'Red rose seed',
       tier: 1,
-      color1: 'red',
+      color1: '#CC4444',
       color2: 'black',
       plantIndex: PlantIndex.RedRose,
       timeToGrow: 10,

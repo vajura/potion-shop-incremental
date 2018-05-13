@@ -25,12 +25,6 @@
     overflow-y: scroll;
   }
   .wilderness-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-content: stretch;
-    align-items: flex-start;
     .world-map {
       width: 667px;
       height: 500px;
@@ -58,38 +52,30 @@
       }
     }
     .world-map-menu {
-      height: 500px;
+      height: 499px;
       width: 146px;
-      .seed-info {
-
+      .world-map-menu-item {
+        width: 100%;
+      }
+    }
+    .send-golems-button {
+      margin: 0 0 5px 22px;
+    }
+    .golem-container {
+      position: relative;
+      .golem-close-button {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        cursor: pointer;
       }
     }
   }
-  .info-window-flex {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-content: stretch;
-    align-items: flex-start;
-    .info-window-column {
-      margin-left: 5px;
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      justify-content: flex-start;
-      align-content: stretch;
-      align-items: flex-start;
-    }
+  .info-window-column {
+    margin-left: 5px;
   }
   .pot-row {
     margin: 5px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-content: stretch;
-    align-items: flex-start;
     .pot-box-description {
       padding: 1px;
       text-align: left;
@@ -99,7 +85,6 @@
   }
   .plant-button-container {
     margin-left: 10px;
-    margin-top: 5px;
     .plant-button {
       width: 60px;
       min-width: 60px;

@@ -6,7 +6,7 @@
           <ngb-tab>
             <ng-template ngbTabTitle>Wilderness</ng-template>
             <ng-template ngbTabContent>
-              <div class="wilderness-container">
+              <div class="wilderness-container f-r-normal">
                 <div class="world-map">
                   <div *ngFor="let wilderness of game.wilderness; let i = index"
                        class="map-button {{'map-button-' + i}} {{mapIconAnimationToggle ? 'map-button-' + i + '-animation' : ''}}"
@@ -15,27 +15,33 @@
                     <div class="fa fa-pagelines"></div>
                   </div>
                 </div>
-                <div class="world-map-menu">
-                  <div class="standard-text text-center">{{game.wilderness[game.selectedWildernessIndex].name}}</div>
-                  <div class="seed-info panel-background">
-                    <div class="standard-text mt-2">Possible Seeds:</div>
-                    <div *ngFor="let seed of game.wilderness[game.selectedWildernessIndex].wildSeeds"
-                         class="standard-text p-1"
-                         [ngStyle]="{'background': seed.color1, 'color': seed.color2}">
-                      - {{getSeedName(seed.seedIndex)}}
+                <div class="world-map-menu f-c-between">
+                  <div class="world-map-menu-item">
+                    <div class="standard-text text-center">{{game.wilderness[game.selectedWildernessIndex].name}}</div>
+                    <div class="panel-background">
+                      <div class="standard-text mt-2">Possible Seeds:</div>
+                      <div *ngFor="let seed of game.wilderness[game.selectedWildernessIndex].wildSeeds"
+                           class="standard-text p-1"
+                           [ngStyle]="{'background': getSeed(seed.seedIndex).color1, 'color': getSeed(seed.seedIndex).color2}">
+                        - {{getSeed(seed.seedIndex).name}}
+                      </div>
+                    </div>
+                    <div class="golem-info panel-background">
+                      <div class="standard-text mt-3">Golem groups {{game.wilderness[game.selectedWildernessIndex].golems.length}}/{{game.wilderness[game.selectedWildernessIndex].maxGolemGroups}}:</div>
+                      <div *ngIf="game.wilderness[game.selectedWildernessIndex].golems.length == 0">
+                        <div class="standard-text text-center">None</div>
+                      </div>
+                      <div *ngFor="let golem of game.wilderness[game.selectedWildernessIndex].golems; let i = index"
+                           class="p-1 mt-1 golem-container"
+                           [ngStyle]="{'background': golem.color1, 'color': golem.color2}">
+                        <div class="fa fa-times golem-close-button" (click)="removeGolemGroup(i)"></div>
+                        <div class="standard-text">{{golem.amount}} {{golem.name}}</div>
+                        <div class="standard-text">HP: {{golem.currentHp}}/{{golem.maxHp}}</div>
+                      </div>
                     </div>
                   </div>
-                  <div class="golem-info panel-background">
-                    <div class="standard-text mt-3">Golem groups {{game.wilderness[game.selectedWildernessIndex].golems.length}}/{{game.wilderness[game.selectedWildernessIndex].maxGolemGroups}}:</div>
-                    <div *ngIf="game.wilderness[game.selectedWildernessIndex].golems.length == 0">
-                      <div class="standard-text text-center">None</div>
-                    </div>
-                    <div *ngFor="let golem of game.wilderness[game.selectedWildernessIndex].golems"
-                         class="p-1 mt-1"
-                         [ngStyle]="{'background': golem.color1, 'color': golem.color2}">
-                      <div class="standard-text">{{golem.amount}} {{golem.name}}</div>
-                      <div class="standard-text">HP: {{golem.currentHp}}/{{golem.maxHp}}</div>
-                    </div>
+                  <div class="world-map-menu-item">
+                    <div class="btn btn-primary send-golems-button">Send Golems</div>
                   </div>
                 </div>
               </div>
@@ -45,12 +51,14 @@
             <ng-template ngbTabTitle>Garden</ng-template>
             <ng-template ngbTabContent>
               <div *ngFor="let pot of game.pots"
-                   class="pot-row"
+                   class="pot-row f-r-normal"
                    [ngStyle]="{'border': '1px solid ' + pot.color1}">
-                <div class="pot-box-description"
+                <div class="pot-box-description f-c-between"
                      [ngStyle]="{'border-right': '1px solid ' + pot.color1}">
-                  <div class="standard-text text-center">{{pot.name}}</div>
-                  <div class="standard-text">Free/Total: {{pot.freePots}}/{{pot.amount}}</div>
+                  <div class="width100">
+                    <div class="standard-text text-center">{{pot.name}}</div>
+                    <div class="standard-text">Free/Total: {{pot.freePots}}/{{pot.amount}}</div>
+                  </div>
                   <div class="plant-button-container">
                     <div class="btn btn-success plant-button">Info</div>
                     <div class="btn btn-primary plant-button">Plant</div>
@@ -70,16 +78,16 @@
     </div>
     <div class="row stats-window">
       <div class="col-md-12 p-0">
-        <div class="info-window-flex">
-          <div class="info-window-column">
+        <div class="f-r-normal">
+          <div class="info-window-column f-c-normal">
             <div class="standard-text">Mana: {{game.currentMana}}/{{game.maxMana}} ({{game.manaRegen}}/s)</div>
             <div class="standard-text">Gold: {{game.gold}}</div>
           </div>
-          <div class="info-window-column">
+          <div class="info-window-column f-c-normal">
             <div *ngFor="let seed of game.seeds; let i = index"
                  class="standard-text">{{seed.name}}: {{seed.amount}}</div>
           </div>
-          <div class="info-window-column">
+          <div class="info-window-column f-c-normal">
             <div *ngFor="let plant of game.plants; let i = index"
                  class="standard-text">{{plant.name}}: {{plant.amount}}</div>
           </div>

@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncap
 import * as createjs from 'createjs-module';
 import { Game } from '../models/game';
 import { golemDeepCopy } from '../models/interfaces/golem-interface';
+import { SeedInterface } from '../models/interfaces/seed-interface';
 declare var kd;
 declare var $;
 
@@ -44,12 +45,16 @@ export class AppComponent implements OnInit {
 
   selectWilderness(index: number) {
     this.game.selectedWildernessIndex = index;
-    let golem = golemDeepCopy(Game.golemCollection[0]);
+    /*let golem = golemDeepCopy(Game.golemCollection[0]);
     golem.amount = 1;
-    this.game.addGolemToWilderness(this.game.wilderness[this.game.selectedWildernessIndex], golem);
+    this.game.addGolemToWilderness(this.game.wilderness[this.game.selectedWildernessIndex], golem);*/
   }
 
-  getSeedName(index: number) {
-    return Game.seedCollection[index].name;
+  removeGolemGroup(golemIndex: number) {
+    this.game.removeGolemFromWilderness(this.game.wilderness[this.game.selectedWildernessIndex], golemIndex);
+  }
+
+  getSeed(index: number): SeedInterface {
+    return Game.seedCollection[index];
   }
 }
