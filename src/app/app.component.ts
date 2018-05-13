@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import * as createjs from 'createjs-module';
 import { Game } from '../models/game';
-import { golemDeepCopy } from '../models/interfaces/golem-interface';
 import { SeedInterface } from '../models/interfaces/seed-interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 declare var kd;
 declare var $;
 
@@ -25,7 +25,8 @@ export class AppComponent implements OnInit {
   mapIconAnimationToggle = false;
   public game: Game;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -43,6 +44,10 @@ export class AppComponent implements OnInit {
     this.uiStage = new createjs.Stage('ui-container');*/
   }
 
+  openGolemSelection(content: any) {
+    this.modalService.open(content, { size: 'lg', windowClass: 'dark-modal' });
+  }
+
   selectWilderness(index: number) {
     this.game.selectedWildernessIndex = index;
     /*let golem = golemDeepCopy(Game.golemCollection[0]);
@@ -52,6 +57,28 @@ export class AppComponent implements OnInit {
 
   removeGolemGroup(golemIndex: number) {
     this.game.removeGolemFromWilderness(this.game.wilderness[this.game.selectedWildernessIndex], golemIndex);
+  }
+
+  getManaCost() {
+    const w = this.game.wilderness[this.game.selectedWildernessIndex];
+    let manaCost = 0;
+    for (let a = 0; a < w.golems.length; a++) {
+      manaCost += w.golems[a].manaCost * w.golems[a].amount;
+    }
+    return manaCost;
+  }
+
+  getGoldCost() {
+    const w = this.game.wilderness[this.game.selectedWildernessIndex];
+    let goldCost = 0;
+    for (let a = 0; a < w.golems.length; a++) {
+      goldCost += w.golems[a].goldCost * w.golems[a].amount;
+    }
+    return goldCost;
+  }
+
+  getGolemCollection() {
+    return Game.golemCollection;
   }
 
   getSeed(index: number): SeedInterface {

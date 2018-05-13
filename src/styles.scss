@@ -36,3 +36,17 @@
 .width100 {
   width: 100%;
 }
+.modal-dialog {
+  max-width: 700px !important;
+}
+.dark-modal .modal-content {
+  background-color: #393b3c;
+  color: white;
+}
+.dark-modal .close {
+  color: white;
+}
+.modal-content {
+  border-radius: 0;
+  box-shadow: 5px 5px 6px 0 rgba(0,0,0,0.59);
+}

@@ -19,14 +19,14 @@
                   <div class="world-map-menu-item">
                     <div class="standard-text text-center">{{game.wilderness[game.selectedWildernessIndex].name}}</div>
                     <div class="panel-background">
-                      <div class="standard-text mt-2">Possible Seeds:</div>
+                      <div class="standard-text mt-1">Possible Seeds:</div>
                       <div *ngFor="let seed of game.wilderness[game.selectedWildernessIndex].wildSeeds"
                            class="standard-text p-1"
                            [ngStyle]="{'background': getSeed(seed.seedIndex).color1, 'color': getSeed(seed.seedIndex).color2}">
                         - {{getSeed(seed.seedIndex).name}}
                       </div>
                     </div>
-                    <div class="golem-info panel-background">
+                    <div class="panel-background">
                       <div class="standard-text mt-3">Golem groups {{game.wilderness[game.selectedWildernessIndex].golems.length}}/{{game.wilderness[game.selectedWildernessIndex].maxGolemGroups}}:</div>
                       <div *ngIf="game.wilderness[game.selectedWildernessIndex].golems.length == 0">
                         <div class="standard-text text-center">None</div>
@@ -39,9 +39,14 @@
                         <div class="standard-text">HP: {{golem.currentHp}}/{{golem.maxHp}}</div>
                       </div>
                     </div>
+                    <div class="panel-background mt-2">
+                      <div class="standard-text">Mana cost: {{getManaCost()}}</div>
+                      <div class="standard-text">Gold cost: {{getGoldCost()}}</div>
+                    </div>
                   </div>
                   <div class="world-map-menu-item">
-                    <div class="btn btn-primary send-golems-button">Send Golems</div>
+                    <div class="btn btn-primary send-golems-button"
+                         (click)="openGolemSelection(golemSelectionModal)">Send Golems</div>
                   </div>
                 </div>
               </div>
@@ -96,3 +101,22 @@
     </div>
   </div>
 </div>
+<ng-template #golemSelectionModal let-c="close">
+  <div class="modal-body">
+    <div class="standard-text text-center">Send golem group</div>
+    <div class="f-r-normal">
+      <div class="standard-text mt-2 mr-3">Select golem:</div>
+      <button *ngFor="let golem of getGolemCollection(); let i = index"
+              type="button"
+              class="btn btn-primary"
+              [ngStyle]="{'background': golem.color1, 'color': golem.color2, 'border': 'none'}">
+        {{golem.name}}
+      </button>
+      <input id="number" type="number">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-primary" (click)="c('Close click')">Send Golems</button>
+  </div>
+</ng-template>
