@@ -27,6 +27,8 @@ export class Game {
   // wilderness
   public wilderness: WildernessInterface[] = [];
   public selectedWildernessIndex = 0;
+  // golems
+  public selectedGolem = 0;
   // Banked stuff
   public pots: PotInterface[] = [];
   public potsI: any[] = [];

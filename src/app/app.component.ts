@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
   uiStage: createjs.Stage;
   mainStage: createjs.Stage;
   mapIconAnimationToggle = false;
+  golemAmount = 1;
   public game: Game;
 
   constructor(private cdr: ChangeDetectorRef,
@@ -55,26 +56,49 @@ export class AppComponent implements OnInit {
     this.game.addGolemToWilderness(this.game.wilderness[this.game.selectedWildernessIndex], golem);*/
   }
 
+  selectGolem(index: number) {
+    this.game.selectedGolem = index;
+  }
+
   removeGolemGroup(golemIndex: number) {
     this.game.removeGolemFromWilderness(this.game.wilderness[this.game.selectedWildernessIndex], golemIndex);
   }
 
   getManaCost() {
-    const w = this.game.wilderness[this.game.selectedWildernessIndex];
-    let manaCost = 0;
-    for (let a = 0; a < w.golems.length; a++) {
-      manaCost += w.golems[a].manaCost * w.golems[a].amount;
-    }
+    const golem = Game.golemCollection[this.game.selectedGolem];
+    let manaCost = golem.manaCost * this.golemAmount;
     return manaCost;
   }
 
   getGoldCost() {
+    const golem = Game.golemCollection[this.game.selectedGolem];
+    let goldCost = golem.goldCost * this.golemAmount;
+    return goldCost;
+  }
+
+  getTotalManaCost() {
+    const wilderness = this.game.wilderness[this.game.selectedWildernessIndex];
+    let manaCost = 0;
+    for (let a = 0; a < wilderness.golems.length; a++) {
+      manaCost += wilderness.golems[a].manaCost * wilderness.golems[a].amount;
+    }
+    return manaCost;
+  }
+
+  getTotalGoldCost() {
     const w = this.game.wilderness[this.game.selectedWildernessIndex];
     let goldCost = 0;
     for (let a = 0; a < w.golems.length; a++) {
       goldCost += w.golems[a].goldCost * w.golems[a].amount;
     }
     return goldCost;
+  }
+
+  addAmount(num: number) {
+    this.golemAmount += num;
+    if (this.golemAmount < 0) {
+      this.golemAmount = 0;
+    }
   }
 
   getGolemCollection() {

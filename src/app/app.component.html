@@ -40,8 +40,8 @@
                       </div>
                     </div>
                     <div class="panel-background mt-2">
-                      <div class="standard-text">Mana cost: {{getManaCost()}}</div>
-                      <div class="standard-text">Gold cost: {{getGoldCost()}}</div>
+                      <div class="standard-text">Mana cost: {{getTotalManaCost()}}</div>
+                      <div class="standard-text">Gold cost: {{getTotalGoldCost()}}</div>
                     </div>
                   </div>
                   <div class="world-map-menu-item">
@@ -103,16 +103,54 @@
 </div>
 <ng-template #golemSelectionModal let-c="close">
   <div class="modal-body">
-    <div class="standard-text text-center">Send golem group</div>
-    <div class="f-r-normal">
-      <div class="standard-text mt-2 mr-3">Select golem:</div>
-      <button *ngFor="let golem of getGolemCollection(); let i = index"
-              type="button"
-              class="btn btn-primary"
-              [ngStyle]="{'background': golem.color1, 'color': golem.color2, 'border': 'none'}">
-        {{golem.name}}
-      </button>
-      <input id="number" type="number">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="standard-text text-center">Send golem group</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="f-r-normal">
+          <div class="standard-text mt-2 mr-3">Select golem:</div>
+          <button *ngFor="let golem of getGolemCollection(); let i = index"
+                  type="button"
+                  class="btn btn-primary"
+                  [ngStyle]="{'background': golem.color1, 'color': golem.color2, 'border': 'none'}"
+                  (click)="selectGolem(i)">
+            {{golem.name}}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <div class="f-r-normal">
+          <div class="standard-text mt-2"
+               style="width: 126px;">Select amount:</div>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(-100)">-100</button>
+              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(-10)">-10</button>
+              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(-1)">-1</button>
+            </div>
+            <input type="text" class="number-input" [(ngModel)]="golemAmount">
+            <div class="input-group-append">
+              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(1)">+1</button>
+              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(10)">+10</button>
+              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(100)">+100</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <div class="f-c-normal"
+             style="height: 200px;">
+          <div class="standard-text mt-2 mr-3">Mana cost: {{getManaCost()}}</div>
+          <div class="standard-text mt-2 mr-3">Gold cost: {{getGoldCost()}}</div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="modal-footer">
