@@ -1,15 +1,17 @@
-import { potDeepCopy, PotInterface } from './interfaces/pot-interface';
-import { plantDeepCopy, PlantInterface } from './interfaces/plant-interface';
-import { seedDeepCopy, SeedInterface } from './interfaces/seed-interface';
+import { PotInterface } from './interfaces/pot-interface';
+import { PlantInterface } from './interfaces/plant-interface';
+import { SeedInterface } from './interfaces/seed-interface';
 import { golemGenerator, plantGenerator, potGenerator, seedGenerator, wildernessGenerator } from '../helpers/game-elements-collection';
 import {ChangeDetectorRef} from '@angular/core';
-import { wildernessDeepCopy, WildernessInterface } from './interfaces/wilderness-interface';
+import { WildernessInterface } from './interfaces/wilderness-interface';
 import { SeedIndex } from './enums/seed-index-helper';
 import { PlantIndex } from './enums/plant-index-helper';
-import { golemDeepCopy, GolemInterface } from './interfaces/golem-interface';
-import { PotIndex } from './enums/pot-index-helper';
-import { WildernessIndex } from './enums/wilderness-index-helper';
+import { GolemInterface } from './interfaces/golem-interface';
 import { NotificationService } from '../services/notification-service';
+import { Plant } from './plant';
+import { Pot } from './pot';
+import { Wilderness } from './wilderness';
+import { Seed } from './seed';
 
 export class Game {
 
@@ -27,19 +29,19 @@ export class Game {
   // gold
   public gold = 0;
   // wilderness
-  public wilderness: WildernessInterface[] = [];
+  public wilderness: Wilderness[] = [];
   public selectedWildernessIndex = 0;
   // golems
   public selectedGolem = 0;
   public golemsI: any[] = [];
   // pots
-  public pots: PotInterface[] = [];
+  public pots: Pot[] = [];
   public potsI: any[] = [];
   // plants
-  public plants: PlantInterface[] = [];
+  public plants: Plant[] = [];
   public plantsI: any[] = [];
   // seeds
-  public seeds: SeedInterface[] = [];
+  public seeds: Seed[] = [];
   public seedsI: any[] = [];
 
   constructor(
