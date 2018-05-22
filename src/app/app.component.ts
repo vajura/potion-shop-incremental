@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
-import * as createjs from 'createjs-module';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Game } from '../models/game';
 import { SeedInterface } from '../models/interfaces/seed-interface';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { golemDeepCopy } from '../models/interfaces/golem-interface';
+import { NotificationService } from '../services/notification-service';
 declare var kd;
 declare var $;
 
@@ -15,19 +16,18 @@ declare var $;
 })
 
 export class AppComponent implements OnInit {
-  width = 800;
-  height = 800;
-  htmlContainer: any;
-  mainContainer: any;
-  uiContainer: any;
-  uiStage: createjs.Stage;
-  mainStage: createjs.Stage;
+
+  @ViewChild('golemSelectionModal') golemSelectionModal: NgbModal;
+
   mapIconAnimationToggle = false;
   golemAmount = 1;
+
   public game: Game;
+  private golemSelectionModalRef: NgbModalRef;
 
   constructor(private cdr: ChangeDetectorRef,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -37,7 +37,8 @@ export class AppComponent implements OnInit {
     setInterval(() => {
       kd.tick();
     }, 25);
-    this.game = new Game(this.cdr);
+    this.game = new Game(this.cdr, this.notificationService);
+    Game.game = this.game;
     /*this.htmlContainer = $('html');
     this.mainContainer = $('#main-container');
     this.uiContainer = $('#ui-container');
@@ -46,14 +47,24 @@ export class AppComponent implements OnInit {
   }
 
   openGolemSelection(content: any) {
-    this.modalService.open(content, { size: 'lg', windowClass: 'dark-modal' });
+    this.golemSelectionModalRef = this.modalService.open(this.golemSelectionModal, {
+      size: 'lg',
+      windowClass: 'dark-modal'
+    });
+  }
+
+  sendGolemGroup() {
+    const golem = golemDeepCopy(Game.golemCollection[this.game.selectedGolem]);
+    golem.amount = this.golemAmount;
+    if (!this.game.addGolemToWilderness(this.game.wilderness[this.game.selectedWildernessIndex], golem)) {
+      this.notificationService.info('', 'You don\'t have enough resources.');
+    } else {
+      this.golemSelectionModalRef.close();
+    }
   }
 
   selectWilderness(index: number) {
     this.game.selectedWildernessIndex = index;
-    /*let golem = golemDeepCopy(Game.golemCollection[0]);
-    golem.amount = 1;
-    this.game.addGolemToWilderness(this.game.wilderness[this.game.selectedWildernessIndex], golem);*/
   }
 
   selectGolem(index: number) {
@@ -94,10 +105,10 @@ export class AppComponent implements OnInit {
     return goldCost;
   }
 
-  addAmount(num: number) {
+  addGolemAmount(num: number) {
     this.golemAmount += num;
-    if (this.golemAmount < 0) {
-      this.golemAmount = 0;
+    if (this.golemAmount < 1) {
+      this.golemAmount = 1;
     }
   }
 

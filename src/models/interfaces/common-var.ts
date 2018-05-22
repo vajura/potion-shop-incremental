@@ -5,4 +5,5 @@ export interface CommonInterface {
   amount: number;
   color1: string;
   color2: string;
+  unlocked: boolean;
 }

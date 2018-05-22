@@ -1,0 +1,17 @@
+<div class="f-r-normal">
+  <div class="standard-text mt-2"
+       style="width: 126px;">Select amount:</div>
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="numberChanged.emit(-100)">-100</button>
+      <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="numberChanged.emit(-10)">-10</button>
+      <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="numberChanged.emit(-1)">-1</button>
+    </div>
+    <input type="text" class="number-input" [(ngModel)]="numberValue">
+    <div class="input-group-append">
+      <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="numberChanged.emit(1)">+1</button>
+      <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="numberChanged.emit(10)">+10</button>
+      <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="numberChanged.emit(100)">+100</button>
+    </div>
+  </div>
+</div>

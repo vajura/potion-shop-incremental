@@ -4,11 +4,16 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
+import { NotificationService } from '../services/notification-service';
+import { NotificationComponent } from '../components/notification/notification.component';
+import { NumberSelectComponent } from '../components/number-select/number-select.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NotificationComponent,
+    NumberSelectComponent
   ],
   imports: [
     BrowserModule,
@@ -16,7 +21,9 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    NotificationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

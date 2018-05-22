@@ -1,22 +1,22 @@
 import { GolemInterface } from './golem-interface';
 import { SeedIndex } from '../enums/seed-index-helper';
 
-export interface WildSeed {
+export interface WildSeedInterface {
   seedIndex: SeedIndex;
   chanceToOccur: number;
 }
 
-export interface WildernessInterface {
+export interface WildernessInterface<GolemModel = GolemInterface> {
   name: string;
-  golems: GolemInterface[];
-  wildSeeds: WildSeed[];
+  golems: GolemModel[];
+  wildSeeds: WildSeedInterface[];
   maxGolemGroups: number;
   chanceToGetNothing: number;
   damagePerSec: number;
   unlocked: boolean;
 }
 
-export function deepCopyWilderness(wilderness: WildernessInterface): WildernessInterface {
+export function wildernessDeepCopy(wilderness: WildernessInterface): WildernessInterface {
   const wildernessCopy: WildernessInterface = {} as any;
   wildernessCopy.name = wilderness.name;
   wildernessCopy.golems = [];

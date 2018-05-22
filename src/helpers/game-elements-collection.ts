@@ -6,6 +6,7 @@ import { SeedIndex } from '../models/enums/seed-index-helper';
 import { PlantIndex } from '../models/enums/plant-index-helper';
 import { GolemInterface } from '../models/interfaces/golem-interface';
 
+
 export function golemGenerator(): GolemInterface[] {
   return [
     {
@@ -17,7 +18,8 @@ export function golemGenerator(): GolemInterface[] {
       color2: 'black',
       currentHp: 20,
       manaCost: 5,
-      goldCost: 0
+      goldCost: 0,
+      unlocked: false
     }
   ];
 }
@@ -50,7 +52,8 @@ export function potGenerator(): PotInterface[] {
       color2: 'white',
       amount: 0,
       freePots: 0,
-      plantedSeeds: []
+      plantedSeeds: [],
+      unlocked: false
     },
     {
       name: 'Chared pot',
@@ -59,7 +62,8 @@ export function potGenerator(): PotInterface[] {
       color2: 'black',
       amount: 0,
       freePots: 0,
-      plantedSeeds: []
+      plantedSeeds: [],
+      unlocked: false
     }
   ];
 }
@@ -72,7 +76,8 @@ export function plantGenerator(): PlantInterface[] {
       color1: '#CC4444',
       color2: 'black',
       seedIndex: SeedIndex.RedRoseSeed,
-      amount: 0
+      amount: 0,
+      unlocked: false
     }
   ];
 }
@@ -86,7 +91,8 @@ export function seedGenerator(): SeedInterface[] {
       color2: 'black',
       plantIndex: PlantIndex.RedRose,
       timeToGrow: 10,
-      amount: 0
+      amount: 0,
+      unlocked: false
     }
   ];
 }

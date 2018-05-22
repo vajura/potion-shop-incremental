@@ -3,15 +3,17 @@ import { plantDeepCopy, PlantInterface } from './interfaces/plant-interface';
 import { seedDeepCopy, SeedInterface } from './interfaces/seed-interface';
 import { golemGenerator, plantGenerator, potGenerator, seedGenerator, wildernessGenerator } from '../helpers/game-elements-collection';
 import {ChangeDetectorRef} from '@angular/core';
-import { deepCopyWilderness, WildernessInterface } from './interfaces/wilderness-interface';
+import { wildernessDeepCopy, WildernessInterface } from './interfaces/wilderness-interface';
 import { SeedIndex } from './enums/seed-index-helper';
 import { PlantIndex } from './enums/plant-index-helper';
 import { golemDeepCopy, GolemInterface } from './interfaces/golem-interface';
 import { PotIndex } from './enums/pot-index-helper';
 import { WildernessIndex } from './enums/wilderness-index-helper';
+import { NotificationService } from '../services/notification-service';
 
 export class Game {
 
+  public static game: Game;
   public static potCollection: PotInterface[];
   public static plantCollection: PlantInterface[];
   public static seedCollection: SeedInterface[];
@@ -29,21 +31,24 @@ export class Game {
   public selectedWildernessIndex = 0;
   // golems
   public selectedGolem = 0;
-  // Banked stuff
+  public golemsI: any[] = [];
+  // pots
   public pots: PotInterface[] = [];
   public potsI: any[] = [];
+  // plants
   public plants: PlantInterface[] = [];
   public plantsI: any[] = [];
+  // seeds
   public seeds: SeedInterface[] = [];
   public seedsI: any[] = [];
-  public golemsI: any[] = [];
 
-  constructor(private cdr: ChangeDetectorRef) {
-    this.generateIndexes();
+  constructor(
+    public cdr: ChangeDetectorRef,
+    public notificationService: NotificationService
+  ) {
+    this.generateCollections();
+    this.generateObjects();
 
-
-    this.wilderness.push(deepCopyWilderness(Game.wildernessCollection[WildernessIndex.TheDarkForest]));
-    this.pots.push(potDeepCopy(Game.potCollection[PotIndex.ClayPot]));
     setTimeout(async () => {
       await this.gameLoop();
     }, 1000);
@@ -79,7 +84,9 @@ export class Game {
             this.removeGolemFromWilderness(this.wilderness[a], b);
             const newGolem = golemDeepCopy(Game.golemCollection[this.golemsI[golem.name]]);
             newGolem.amount = golem.amount;
-            this.addGolemToWilderness(this.wilderness[a], newGolem);
+            if (!this.addGolemToWilderness(this.wilderness[a], newGolem, b)) {
+              this.notificationService.info('', 'Golem group ' + (b + 1) + ' was not renewed.');
+            }
           }
         }
       }
@@ -97,12 +104,13 @@ export class Game {
             this.removeSeedFromPot(this.pots[a], b);
             const newSeed = seedDeepCopy(Game.seedCollection[this.seedsI[seed.name]]);
             newSeed.amount = seed.amount;
-            this.addSeedToPot(this.pots[a], newSeed);
+            this.addSeedToPot(this.pots[a], newSeed, b);
           }
         }
       }
     }
   }
+
   async gameLoopForMana() {
     this.currentMana += this.manaRegen;
     if (this.currentMana > this.maxMana) {
@@ -114,31 +122,39 @@ export class Game {
     wilderness.golems.splice(golemIndex, 1);
   }
 
-  addGolemToWilderness(wilderness: WildernessInterface, golem: GolemInterface): GolemInterface {
+  addGolemToWilderness(wilderness: WildernessInterface, golem: GolemInterface, index?: number): GolemInterface {
     if (this.currentMana >= golem.manaCost * golem.amount &&
         this.gold >= golem.goldCost * golem.amount &&
         wilderness.golems.length < wilderness.maxGolemGroups
     ) {
       this.checkAndRemoveMana(golem.manaCost * golem.amount);
       this.checkAndRemoveGold(golem.goldCost * golem.amount);
-      wilderness.golems.push(golem);
+      if (index !== undefined) {
+        wilderness.golems.splice(index, 0, golem);
+      } else {
+        wilderness.golems.push(golem);
+      }
       return golem;
     } else {
       return undefined;
     }
   }
 
-  checkAndRemoveGold(amount: number): boolean {
+  checkAndRemoveGold(amount: number, remove = true): boolean {
     if (this.gold >= amount) {
-      this.gold -= amount;
+      if (remove) {
+        this.gold -= amount;
+      }
       return true;
     }
     return false;
   }
 
-  checkAndRemoveMana(amount: number): boolean {
+  checkAndRemoveMana(amount: number, remove = true): boolean {
     if (this.currentMana >= amount) {
-      this.currentMana -= amount;
+      if (remove) {
+        this.currentMana -= amount;
+      }
       return true;
     }
     return false;
@@ -157,10 +173,14 @@ export class Game {
     pot.plantedSeeds.splice(seedIndex, 1);
   }
 
-  addSeedToPot(pot: PotInterface, seed: SeedInterface): SeedInterface {
+  addSeedToPot(pot: PotInterface, seed: SeedInterface, index?: number): SeedInterface {
     seed.amount = this.removeSeedFromBank(this.seedsI[seed.name], seed.amount);
     if (seed.amount > 0) {
-      pot.plantedSeeds.push(seed);
+      if (index !== undefined) {
+        pot.plantedSeeds.splice(index, 0, seed);
+      } else {
+        pot.plantedSeeds.push(seed);
+      }
       return seed;
     } else {
       return undefined;
@@ -189,7 +209,7 @@ export class Game {
     }
   }
 
-  generateIndexes() {
+  generateCollections() {
     Game.potCollection = potGenerator();
     Game.plantCollection = plantGenerator();
     Game.seedCollection = seedGenerator();
@@ -209,6 +229,22 @@ export class Game {
       this.golemsI[Game.golemCollection[a].name] = a;
     }
   }
+
+  generateObjects() {
+    for (let a = 0; a < Game.potCollection.length; a++) {
+      this.pots.push(potDeepCopy(Game.potCollection[a]));
+    }
+    for (let a = 0; a < Game.plantCollection.length; a++) {
+      this.plants.push(plantDeepCopy(Game.plantCollection[a]));
+    }
+    for (let a = 0; a < Game.seedCollection.length; a++) {
+      this.seeds.push(seedDeepCopy(Game.seedCollection[a]));
+    }
+    for (let a = 0; a < Game.wildernessCollection.length; a++) {
+      this.wilderness.push(wildernessDeepCopy(Game.wildernessCollection[a]));
+    }
+  }
+
   getSeedFromName(name: string): SeedInterface {
     return this.seeds[this.seedsI[name]];
   }

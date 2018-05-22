@@ -57,9 +57,9 @@
             <ng-template ngbTabContent>
               <div *ngFor="let pot of game.pots"
                    class="pot-row f-r-normal"
-                   [ngStyle]="{'border': '1px solid ' + pot.color1}">
+                   [ngStyle]="{'border': '2px solid ' + pot.color1}">
                 <div class="pot-box-description f-c-between"
-                     [ngStyle]="{'border-right': '1px solid ' + pot.color1}">
+                     [ngStyle]="{'border-right': '2px solid ' + pot.color1}">
                   <div class="width100">
                     <div class="standard-text text-center">{{pot.name}}</div>
                     <div class="standard-text">Free/Total: {{pot.freePots}}/{{pot.amount}}</div>
@@ -100,12 +100,13 @@
       </div>
     </div>
   </div>
+  <app-notification></app-notification>
 </div>
 <ng-template #golemSelectionModal let-c="close">
   <div class="modal-body">
     <div class="row">
       <div class="col-md-12">
-        <div class="standard-text text-center">Send golem group</div>
+        <div class="standard-text text-center">Send {{getGolemCollection()[this.game.selectedGolem].name}} group</div>
       </div>
     </div>
     <div class="row">
@@ -124,23 +125,7 @@
     </div>
     <div class="row mt-2">
       <div class="col-md-12">
-        <div class="f-r-normal">
-          <div class="standard-text mt-2"
-               style="width: 126px;">Select amount:</div>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(-100)">-100</button>
-              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(-10)">-10</button>
-              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(-1)">-1</button>
-            </div>
-            <input type="text" class="number-input" [(ngModel)]="golemAmount">
-            <div class="input-group-append">
-              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(1)">+1</button>
-              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(10)">+10</button>
-              <button class="btn btn-outline-light" type="button" aria-disabled="true" (click)="addAmount(100)">+100</button>
-            </div>
-          </div>
-        </div>
+        <app-number-select (numberChanged)="addGolemAmount($event)" [numberValue]="golemAmount"></app-number-select>
       </div>
     </div>
     <div class="row mt-2">
@@ -155,6 +140,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
-    <button type="button" class="btn btn-primary" (click)="c('Close click')">Send Golems</button>
+    <button type="button" class="btn btn-primary" (click)="sendGolemGroup()">Send Golems</button>
   </div>
 </ng-template>

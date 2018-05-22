@@ -1,9 +1,9 @@
 import { CommonInterface } from './common-var';
 import { SeedInterface } from './seed-interface';
 
-export interface PotInterface extends CommonInterface {
+export interface PotInterface<SeedModel = SeedInterface> extends CommonInterface {
   freePots: number;
-  plantedSeeds: SeedInterface[];
+  plantedSeeds: SeedModel[];
 }
 
 export function potDeepCopy(pot: PotInterface): PotInterface {
