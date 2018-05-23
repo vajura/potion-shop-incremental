@@ -27,5 +27,17 @@ export class Seed extends BaseClass<SeedInterface> implements SeedInterface {
   public gameLoop(): void {
 
   }
+
+  public addAmount(amount: number): void {
+    this.amount += amount;
+  }
+
+  public removeAmount(amount: number): number {
+    if (this.amount < amount) {
+      amount = this.amount;
+    }
+    this.amount -= amount;
+    return amount;
+  }
 }
 

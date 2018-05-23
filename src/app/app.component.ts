@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChil
 import { Game } from '../models/game';
 import { SeedInterface } from '../models/interfaces/seed-interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { golemDeepCopy } from '../models/interfaces/golem-interface';
 import { NotificationService } from '../services/notification-service';
+import { Golem } from '../models/golem';
 declare var kd;
 declare var $;
 
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   mapIconAnimationToggle = false;
   golemAmount = 1;
 
-  public game: Game;
+  private game: Game;
   private golemSelectionModalRef: NgbModalRef;
 
   constructor(private cdr: ChangeDetectorRef,
@@ -38,7 +38,6 @@ export class AppComponent implements OnInit {
       kd.tick();
     }, 25);
     this.game = new Game(this.cdr, this.notificationService);
-    Game.game = this.game;
     /*this.htmlContainer = $('html');
     this.mainContainer = $('#main-container');
     this.uiContainer = $('#ui-container');
@@ -54,9 +53,9 @@ export class AppComponent implements OnInit {
   }
 
   sendGolemGroup() {
-    const golem = golemDeepCopy(Game.golemCollection[this.game.selectedGolem]);
+    const golem: Golem = new Golem(Game.golemCollection[this.game.selectedGolem]);
     golem.amount = this.golemAmount;
-    if (!this.game.addGolemToWilderness(this.game.wilderness[this.game.selectedWildernessIndex], golem)) {
+    if (!this.game.wilderness[this.game.selectedWildernessIndex].addGolem(golem)) {
       this.notificationService.info('', 'You don\'t have enough resources.');
     } else {
       this.golemSelectionModalRef.close();
@@ -72,7 +71,7 @@ export class AppComponent implements OnInit {
   }
 
   removeGolemGroup(golemIndex: number) {
-    this.game.removeGolemFromWilderness(this.game.wilderness[this.game.selectedWildernessIndex], golemIndex);
+    this.game.wilderness[this.game.selectedWildernessIndex].removeGolem(golemIndex);
   }
 
   getManaCost() {

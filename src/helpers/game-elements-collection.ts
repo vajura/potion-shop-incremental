@@ -28,6 +28,10 @@ export function wildernessGenerator(): WildernessInterface[] {
   return [
     {
       name: 'The Dark Forest',
+      tier: 1,
+      color1: 'green',
+      color2: 'brown',
+      amount: 0,
       golems: [],
       maxGolemGroups: 5,
       wildSeeds: [

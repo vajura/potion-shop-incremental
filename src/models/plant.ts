@@ -25,4 +25,8 @@ export class Plant extends BaseClass<PlantInterface> implements PlantInterface {
   public gameLoop(): void {
 
   }
+
+  public addAmount(amount: number): void {
+    this.amount += amount;
+  }
 }
