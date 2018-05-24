@@ -4,9 +4,11 @@ import { Seed } from './seed';
 import { baseInterfaceCopy } from './interfaces/base-interface';
 import { game, Game } from './game';
 import { SeedInterface } from './interfaces/seed-interface';
+import { PlantInterface } from './interfaces/plant-interface';
 
 export class Pot extends BaseClass<PotInterface> implements PotInterface<Seed> {
 
+  public reference: PotInterface;
   public freePots: number;
   public plantedSeeds: Seed[];
   public name: string;
@@ -16,12 +18,13 @@ export class Pot extends BaseClass<PotInterface> implements PotInterface<Seed> {
   public color2: string;
   public unlocked: boolean;
 
-  constructor(pot: PotInterface) {
-    super(pot);
+  constructor(pot: PotInterface, referenceIndex?: number) {
+    super(pot, referenceIndex);
   }
 
-  protected assignData(data: PotInterface) {
+  protected assignData(data: PotInterface, referenceIndex?: number) {
     baseInterfaceCopy(this, data);
+    this.reference = Game.potCollection[referenceIndex];
     this.freePots = data.freePots;
     this.plantedSeeds = [];
   }

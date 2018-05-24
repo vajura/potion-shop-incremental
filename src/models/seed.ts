@@ -2,9 +2,12 @@ import { SeedInterface } from './interfaces/seed-interface';
 import { BaseClass } from './base';
 import { PlantIndex } from './enums/plant-index-helper';
 import { baseInterfaceCopy } from './interfaces/base-interface';
+import { PotInterface } from './interfaces/pot-interface';
+import { Game } from './game';
 
 export class Seed extends BaseClass<SeedInterface> implements SeedInterface {
 
+  public reference: SeedInterface;
   public name: string;
   public tier: number;
   public amount: number;
@@ -14,12 +17,13 @@ export class Seed extends BaseClass<SeedInterface> implements SeedInterface {
   public timeToGrow: number;
   public plantIndex: PlantIndex;
 
-  constructor(seed: SeedInterface) {
-    super(seed);
+  constructor(seed: SeedInterface, referenceIndex?: number) {
+    super(seed, referenceIndex);
   }
 
-  protected assignData(data: SeedInterface) {
+  protected assignData(data: SeedInterface, referenceIndex?: number) {
     baseInterfaceCopy(this, data);
+    this.reference = Game.seedCollection[referenceIndex];
     this.timeToGrow = data.timeToGrow;
     this.plantIndex = data.plantIndex;
   }

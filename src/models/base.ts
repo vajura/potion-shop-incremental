@@ -1,8 +1,9 @@
 export abstract class BaseClass<T> {
 
-  constructor(data: T) {
-    this.assignData(data);
+  public reference: T;
+  constructor(data: T, referenceIndex?: number) {
+    this.assignData(data, referenceIndex);
   }
-  protected abstract assignData(data: T): void;
+  protected abstract assignData(data: T, referenceIndex?: number): void;
   public abstract gameLoop(): void;
 }

@@ -8,33 +8,34 @@
             <ng-template ngbTabContent>
               <div class="wilderness-container f-r-normal">
                 <div class="world-map">
-                  <div *ngFor="let wilderness of game.wilderness; let i = index"
+                  <div *ngFor="let wilderness of game.getUnlockedWilderness(); let i = index"
                        class="map-button {{'map-button-' + i}} {{mapIconAnimationToggle ? 'map-button-' + i + '-animation' : ''}}"
                        ngbTooltip="{{wilderness.name}}"
-                       (click)="selectWilderness(i)">
+                       (click)="game.selectedWilderness = wilderness">
                     <div class="fa fa-pagelines"></div>
                   </div>
                 </div>
                 <div class="world-map-menu f-c-between">
                   <div class="world-map-menu-item">
-                    <div class="standard-text text-center">{{game.wilderness[game.selectedWildernessIndex].name}}</div>
+                    <div class="standard-text text-center">{{game.selectedWilderness.name}}</div>
                     <div class="panel-background">
                       <div class="standard-text mt-1">Possible Seeds:</div>
-                      <div *ngFor="let seed of game.wilderness[game.selectedWildernessIndex].wildSeeds"
+                      <div *ngFor="let seed of game.selectedWilderness.wildSeeds"
                            class="standard-text p-1"
                            [ngStyle]="{'background': getSeed(seed.seedIndex).color1, 'color': getSeed(seed.seedIndex).color2}">
                         - {{getSeed(seed.seedIndex).name}}
                       </div>
                     </div>
                     <div class="panel-background">
-                      <div class="standard-text mt-3">Golem groups {{game.wilderness[game.selectedWildernessIndex].golems.length}}/{{game.wilderness[game.selectedWildernessIndex].maxGolemGroups}}:</div>
-                      <div *ngIf="game.wilderness[game.selectedWildernessIndex].golems.length == 0">
+                      <div class="standard-text mt-3">Golem groups
+                        {{game.selectedWilderness.golems.length}}/{{game.selectedWilderness.maxGolemGroups}}:</div>
+                      <div *ngIf="game.selectedWilderness.golems.length == 0">
                         <div class="standard-text text-center">None</div>
                       </div>
-                      <div *ngFor="let golem of game.wilderness[game.selectedWildernessIndex].golems; let i = index"
+                      <div *ngFor="let golem of game.selectedWilderness.golems; let i = index"
                            class="p-1 mt-1 golem-container"
                            [ngStyle]="{'background': golem.color1, 'color': golem.color2}">
-                        <div class="fa fa-times golem-close-button" (click)="removeGolemGroup(i)"></div>
+                        <div class="fa fa-times golem-close-button" (click)="game.selectedWilderness.removeGolem(i)"></div>
                         <div class="standard-text">{{golem.amount}} {{golem.name}}</div>
                         <div class="standard-text">HP: {{golem.currentHp}}/{{golem.maxHp}}</div>
                       </div>
@@ -55,18 +56,22 @@
           <ngb-tab>
             <ng-template ngbTabTitle>Garden</ng-template>
             <ng-template ngbTabContent>
-              <div *ngFor="let pot of game.pots"
-                   class="pot-row f-r-normal"
-                   [ngStyle]="{'border': '2px solid ' + pot.color1}">
-                <div class="pot-box-description f-c-between"
-                     [ngStyle]="{'border-right': '2px solid ' + pot.color1}">
-                  <div class="width100">
-                    <div class="standard-text text-center">{{pot.name}}</div>
-                    <div class="standard-text">Free/Total: {{pot.freePots}}/{{pot.amount}}</div>
-                  </div>
-                  <div class="plant-button-container">
-                    <div class="btn btn-success plant-button">Info</div>
-                    <div class="btn btn-primary plant-button">Plant</div>
+              <div class="pot-tab">
+                <div class="header-pot-buttons">
+                  <div class="btn btn-success buy-pots-button">Buy Pots</div>
+                </div>
+                <div *ngFor="let pot of game.getUnlockedPots()"
+                     class="pot-row f-r-normal"
+                     [ngStyle]="{'border': '2px solid ' + pot.color1}">
+                  <div class="pot-box-description f-c-between"
+                       [ngStyle]="{'border-right': '2px solid ' + pot.color1}">
+                    <div class="width100">
+                      <div class="standard-text text-center">{{pot.name}}</div>
+                      <div class="standard-text">Free/Total: {{pot.freePots}}/{{pot.amount}}</div>
+                    </div>
+                    <div class="plant-button-container">
+                      <div class="btn btn-primary plant-button">Plant seed</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -89,11 +94,11 @@
             <div class="standard-text">Gold: {{game.gold}}</div>
           </div>
           <div class="info-window-column f-c-normal">
-            <div *ngFor="let seed of game.seeds; let i = index"
+            <div *ngFor="let seed of game.getUnlockedSeeds(); let i = index"
                  class="standard-text">{{seed.name}}: {{seed.amount}}</div>
           </div>
           <div class="info-window-column f-c-normal">
-            <div *ngFor="let plant of game.plants; let i = index"
+            <div *ngFor="let plant of game.getUnlockedPlants(); let i = index"
                  class="standard-text">{{plant.name}}: {{plant.amount}}</div>
           </div>
         </div>
@@ -106,18 +111,18 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-md-12">
-        <div class="standard-text text-center">Send {{getGolemCollection()[this.game.selectedGolem].name}} group</div>
+        <div class="standard-text text-center">Send {{game.selectedGolem.name}} group</div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
         <div class="f-r-normal">
           <div class="standard-text mt-2 mr-3">Select golem:</div>
-          <button *ngFor="let golem of getGolemCollection(); let i = index"
+          <button *ngFor="let golem of game.getUnlockedGolems(); let i = index"
                   type="button"
                   class="btn btn-primary"
                   [ngStyle]="{'background': golem.color1, 'color': golem.color2, 'border': 'none'}"
-                  (click)="selectGolem(i)">
+                  (click)="game.selectedGolem = golem">
             {{golem.name}}
           </button>
         </div>
@@ -132,8 +137,8 @@
       <div class="col-md-12">
         <div class="f-c-normal"
              style="height: 200px;">
-          <div class="standard-text mt-2 mr-3">Mana cost: {{getManaCost()}}</div>
-          <div class="standard-text mt-2 mr-3">Gold cost: {{getGoldCost()}}</div>
+          <div class="standard-text mt-2 mr-3">Mana cost: {{game.selectedGolem.manaCost}}</div>
+          <div class="standard-text mt-2 mr-3">Gold cost: {{game.selectedGolem.goldCost}}</div>
         </div>
       </div>
     </div>

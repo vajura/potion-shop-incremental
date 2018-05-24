@@ -75,23 +75,32 @@
   .info-window-column {
     margin-left: 5px;
   }
-  .pot-row {
-    margin: 5px;
-    .pot-box-description {
-      padding: 1px;
-      text-align: left;
-      width: 150px;
-      height: 100px;
+  .pot-tab {
+    .header-pot-buttons {
+      margin: 5px;
+      .buy-pots-button {
+        width: 80px;
+        min-width: 80px;
+      }
     }
-  }
-  .plant-button-container {
-    margin-left: 10px;
-    .plant-button {
-      width: 60px;
-      min-width: 60px;
+    .pot-row {
+      margin: 5px;
+      .pot-box-description {
+        padding: 1px;
+        text-align: left;
+        width: 150px;
+        height: 100px;
+      }
+    }
+    .plant-button-container {
+      margin-left: 10px;
+      .plant-button {
+        width: 80px;
+        min-width: 80px;
+      }
     }
   }
 }
 .text-center {
-  text-align: center;
+text-align: center;
 }

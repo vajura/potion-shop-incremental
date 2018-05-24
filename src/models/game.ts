@@ -10,6 +10,7 @@ import { Plant } from './plant';
 import { Pot } from './pot';
 import { Wilderness } from './wilderness';
 import { Seed } from './seed';
+import { Golem } from './golem';
 
 export let game: Game;
 
@@ -34,9 +35,10 @@ export class Game {
   public gold = 0;
   // wilderness
   public wilderness: Wilderness[] = [];
-  public selectedWildernessIndex = 0;
+  public selectedWilderness: Wilderness;
   // golems
-  public selectedGolem = 0;
+  public golems: Golem[] = [];
+  public selectedGolem: Golem;
   // pots
   public pots: Pot[] = [];
   // plants
@@ -123,17 +125,77 @@ export class Game {
 
   generateObjects() {
     for (let a = 0; a < Game.potCollection.length; a++) {
-      this.pots.push(new Pot(Game.potCollection[a]));
+      this.pots.push(new Pot(Game.potCollection[a], a));
     }
     for (let a = 0; a < Game.plantCollection.length; a++) {
-      this.plants.push(new Plant(Game.plantCollection[a]));
+      this.plants.push(new Plant(Game.plantCollection[a], a));
     }
     for (let a = 0; a < Game.seedCollection.length; a++) {
-      this.seeds.push(new Seed(Game.seedCollection[a]));
+      this.seeds.push(new Seed(Game.seedCollection[a], a));
     }
     for (let a = 0; a < Game.wildernessCollection.length; a++) {
-      this.wilderness.push(new Wilderness(Game.wildernessCollection[a]));
+      this.wilderness.push(new Wilderness(Game.wildernessCollection[a], a));
     }
+    for (let a = 0; a < Game.golemCollection.length; a++) {
+      this.golems.push(new Golem(Game.golemCollection[a], a));
+    }
+    this.selectedWilderness = this.wilderness[0];
+    this.selectedGolem = this.golems[0];
+  }
+
+  getUnlockedWilderness(): Wilderness[] {
+    const unlockedElements: Wilderness[] = [];
+
+    for (let a = 0; a < this.wilderness.length; a++) {
+      if (this.wilderness[a].unlocked) {
+        unlockedElements.push(this.wilderness[a]);
+      }
+    }
+    return unlockedElements;
+  }
+
+  getUnlockedSeeds(): Seed[] {
+    const unlockedElements: Seed[] = [];
+
+    for (let a = 0; a < this.seeds.length; a++) {
+      if (this.seeds[a].unlocked) {
+        unlockedElements.push(this.seeds[a]);
+      }
+    }
+    return unlockedElements;
+  }
+
+  getUnlockedPots(): Pot[] {
+    const unlockedElements: Pot[] = [];
+
+    for (let a = 0; a < this.pots.length; a++) {
+      if (this.pots[a].unlocked) {
+        unlockedElements.push(this.pots[a]);
+      }
+    }
+    return unlockedElements;
+  }
+
+  getUnlockedPlants(): Plant[] {
+    const unlockedElements: Plant[] = [];
+
+    for (let a = 0; a < this.plants.length; a++) {
+      if (this.plants[a].unlocked) {
+        unlockedElements.push(this.plants[a]);
+      }
+    }
+    return unlockedElements;
+  }
+
+  getUnlockedGolems(): Golem[] {
+    const unlockedElements: Golem[] = [];
+
+    for (let a = 0; a < this.golems.length; a++) {
+      if (this.golems[a].unlocked) {
+        unlockedElements.push(this.golems[a]);
+      }
+    }
+    return unlockedElements;
   }
 
   getSeedFromName(name: string): SeedInterface {

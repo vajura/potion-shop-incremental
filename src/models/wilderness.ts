@@ -6,9 +6,11 @@ import { game, Game } from './game';
 import { GolemInterface } from './interfaces/golem-interface';
 import { getComponentDecorator } from 'codelyzer/util/utils';
 import { getCollection } from '@angular/cli/utilities/schematics';
+import { PotInterface } from './interfaces/pot-interface';
 
 export class Wilderness extends BaseClass<WildernessInterface> implements WildernessInterface<Golem> {
 
+  public reference: WildernessInterface;
   public tier: number;
   public amount: number;
   public color1: string;
@@ -21,12 +23,13 @@ export class Wilderness extends BaseClass<WildernessInterface> implements Wilder
   public name: string;
   public wildSeeds: WildSeedInterface[];
 
-  constructor(wilderness: WildernessInterface) {
-    super(wilderness);
+  constructor(wilderness: WildernessInterface, referenceIndex?: number) {
+    super(wilderness, referenceIndex);
   }
 
-  protected assignData(data: WildernessInterface) {
+  protected assignData(data: WildernessInterface, referenceIndex?: number) {
     baseInterfaceCopy(this, data);
+    this.reference = Game.wildernessCollection[referenceIndex];
     this.damagePerSec = data.damagePerSec;
     this.maxGolemGroups = data.maxGolemGroups;
     this.unlocked = data.unlocked;

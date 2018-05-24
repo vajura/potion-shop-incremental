@@ -19,7 +19,7 @@ export function golemGenerator(): GolemInterface[] {
       currentHp: 20,
       manaCost: 5,
       goldCost: 0,
-      unlocked: false
+      unlocked: true
     }
   ];
 }
@@ -57,7 +57,7 @@ export function potGenerator(): PotInterface[] {
       amount: 0,
       freePots: 0,
       plantedSeeds: [],
-      unlocked: false
+      unlocked: true
     },
     {
       name: 'Chared pot',
@@ -67,7 +67,7 @@ export function potGenerator(): PotInterface[] {
       amount: 0,
       freePots: 0,
       plantedSeeds: [],
-      unlocked: false
+      unlocked: true
     }
   ];
 }
@@ -81,7 +81,7 @@ export function plantGenerator(): PlantInterface[] {
       color2: 'black',
       seedIndex: SeedIndex.RedRoseSeed,
       amount: 0,
-      unlocked: false
+      unlocked: true
     }
   ];
 }
@@ -96,7 +96,7 @@ export function seedGenerator(): SeedInterface[] {
       plantIndex: PlantIndex.RedRose,
       timeToGrow: 10,
       amount: 0,
-      unlocked: false
+      unlocked: true
     }
   ];
 }
