@@ -4,7 +4,8 @@ import { SeedInterface } from '../models/interfaces/seed-interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from '../services/notification-service';
 import { Golem } from '../models/golem';
-import { Wilderness } from '../models/wilderness';
+import { Supplier } from '../models/supplier';
+import { Seller } from '../models/interfaces/supplier-interface';
 declare var kd;
 declare var $;
 
@@ -19,12 +20,14 @@ declare var $;
 export class AppComponent implements OnInit {
 
   @ViewChild('golemSelectionModal') golemSelectionModal: NgbModal;
+  private golemSelectionModalRef: NgbModalRef;
+  @ViewChild('supplierChangeModal') supplierChangeModal: NgbModal;
+  private supplierChangeModalRef: NgbModalRef;
 
-  mapIconAnimationToggle = false;
+  animationToggle = false;
   golemAmount = 1;
 
   public game: Game;
-  private golemSelectionModalRef: NgbModalRef;
 
   constructor(private cdr: ChangeDetectorRef,
               private modalService: NgbModal,
@@ -33,7 +36,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     setInterval(() => {
-      this.mapIconAnimationToggle = !this.mapIconAnimationToggle;
+      this.animationToggle = !this.animationToggle;
     }, 1000);
     setInterval(() => {
       kd.tick();
@@ -46,8 +49,17 @@ export class AppComponent implements OnInit {
     this.uiStage = new createjs.Stage('ui-container');*/
   }
 
-  openGolemSelection(content: any) {
+  openGolemSelection() {
     this.golemSelectionModalRef = this.modalService.open(this.golemSelectionModal, {
+      size: 'lg',
+      windowClass: 'dark-modal'
+    });
+  }
+
+  openSupplierChangeModal(supplier: Supplier, seller: Seller<any>) {
+    this.game.selectedSupplier = supplier;
+    this.game.selectedSeller = seller;
+    this.supplierChangeModalRef = this.modalService.open(this.supplierChangeModal, {
       size: 'lg',
       windowClass: 'dark-modal'
     });
@@ -83,6 +95,16 @@ export class AppComponent implements OnInit {
     this.golemAmount += num;
     if (this.golemAmount < 1) {
       this.golemAmount = 1;
+    }
+  }
+
+  changeSellerAmount (num: number) {
+    this.game.selectedSeller.amount += num;
+    if (this.game.selectedSeller.amount < 0) {
+      this.game.selectedSeller.amount = 0;
+    }
+    if (this.game.selectedSeller.amount > this.game.selectedSupplier.amount) {
+      this.game.selectedSeller.amount = this.game.selectedSupplier.amount;
     }
   }
 

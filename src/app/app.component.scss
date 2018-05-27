@@ -93,12 +93,26 @@
       }
     }
     .plant-button-container {
-      margin-left: 10px;
+      margin-left: 21px;
       .plant-button {
-        width: 80px;
-        min-width: 80px;
+        width: 100px;
+        min-width: 100px;
       }
     }
+  }
+}
+.shop-tab {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: stretch;
+  align-items: flex-start;
+  .supplier-panel {
+    margin: 5px;
+    padding: 5px;
+    height: 200px;
+    width: calc(50% - 10px);
   }
 }
 .text-center {

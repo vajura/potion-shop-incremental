@@ -1,7 +1,14 @@
 import { PotInterface } from './interfaces/pot-interface';
 import { PlantInterface } from './interfaces/plant-interface';
 import { SeedInterface } from './interfaces/seed-interface';
-import { golemGenerator, plantGenerator, potGenerator, seedGenerator, wildernessGenerator } from '../helpers/game-elements-collection';
+import {
+  golemGenerator,
+  plantGenerator,
+  potGenerator,
+  seedGenerator,
+  supplierGenerator,
+  wildernessGenerator
+} from '../helpers/game-elements-collection';
 import { ChangeDetectorRef } from '@angular/core';
 import { WildernessInterface } from './interfaces/wilderness-interface';
 import { GolemInterface } from './interfaces/golem-interface';
@@ -11,6 +18,8 @@ import { Pot } from './pot';
 import { Wilderness } from './wilderness';
 import { Seed } from './seed';
 import { Golem } from './golem';
+import { Seller, SupplierInterface } from './interfaces/supplier-interface';
+import { Supplier } from './supplier';
 
 export let game: Game;
 
@@ -26,6 +35,8 @@ export class Game {
   public static golemsI: any[] = [];
   public static wildernessCollection: WildernessInterface[];
   public static wildernessI: any[] = [];
+  public static supplierCollection: SupplierInterface[];
+  public static supplierI: any[] = [];
 
   // mana
   public maxMana = 100;
@@ -45,14 +56,24 @@ export class Game {
   public plants: Plant[] = [];
   // seeds
   public seeds: Seed[] = [];
+  // suppliers
+  public suppliers: Supplier[] = [];
+  public selectedSupplier: Supplier;
+  public selectedSeller: Seller<any>;
+
+  // counters
+  public elapsedCounter = 0;
 
   constructor(
     public cdr: ChangeDetectorRef,
     public notificationService: NotificationService
   ) {
+    game = this;
     this.generateCollections();
     this.generateObjects();
-    game = this;
+    if (this.suppliers[0].amount === 0) {
+      this.suppliers[0].amount = 1;
+    }
     setTimeout(async () => {
       await this.gameLoop();
     }, 1000);
@@ -65,7 +86,9 @@ export class Game {
     for (let a = 0; a < this.pots.length; a++) { this.pots[a].gameLoop(); }
     for (let a = 0; a < this.plants.length; a++) { this.plants[a].gameLoop(); }
     for (let a = 0; a < this.seeds.length; a++) { this.seeds[a].gameLoop(); }
+    for (let a = 0; a < this.suppliers.length; a++) { this.suppliers[a].gameLoop(); }
 
+    this.elapsedCounter++;
     await this.cdr.markForCheck();
     setTimeout(async () => {
       await this.gameLoop();
@@ -105,6 +128,7 @@ export class Game {
     Game.seedCollection = seedGenerator();
     Game.wildernessCollection = wildernessGenerator();
     Game.golemCollection = golemGenerator();
+    Game.supplierCollection = supplierGenerator();
 
     for (let a = 0; a < Game.potCollection.length; a++) {
       Game.potsI[Game.potCollection[a].name] = a;
@@ -120,6 +144,9 @@ export class Game {
     }
     for (let a = 0; a < Game.wildernessCollection.length; a++) {
       Game.wildernessI[Game.wildernessCollection[a].name] = a;
+    }
+    for (let a = 0; a < Game.supplierCollection.length; a++) {
+      Game.supplierI[Game.supplierCollection[a].name] = a;
     }
   }
 
@@ -138,6 +165,9 @@ export class Game {
     }
     for (let a = 0; a < Game.golemCollection.length; a++) {
       this.golems.push(new Golem(Game.golemCollection[a], a));
+    }
+    for (let a = 0; a < Game.supplierCollection.length; a++) {
+      this.suppliers.push(new Supplier(Game.supplierCollection[a], a));
     }
     this.selectedWilderness = this.wilderness[0];
     this.selectedGolem = this.golems[0];
@@ -193,6 +223,17 @@ export class Game {
     for (let a = 0; a < this.golems.length; a++) {
       if (this.golems[a].unlocked) {
         unlockedElements.push(this.golems[a]);
+      }
+    }
+    return unlockedElements;
+  }
+
+  getUnlockedSuppliers(): Supplier[] {
+    const unlockedElements: Supplier[] = [];
+
+    for (let a = 0; a < this.suppliers.length; a++) {
+      if (this.suppliers[a].unlocked) {
+        unlockedElements.push(this.suppliers[a]);
       }
     }
     return unlockedElements;

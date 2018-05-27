@@ -9,7 +9,7 @@
               <div class="wilderness-container f-r-normal">
                 <div class="world-map">
                   <div *ngFor="let wilderness of game.getUnlockedWilderness(); let i = index"
-                       class="map-button {{'map-button-' + i}} {{mapIconAnimationToggle ? 'map-button-' + i + '-animation' : ''}}"
+                       class="map-button {{'map-button-' + i}} {{animationToggle ? 'map-button-' + i + '-animation' : ''}}"
                        ngbTooltip="{{wilderness.name}}"
                        (click)="game.selectedWilderness = wilderness">
                     <div class="fa fa-pagelines"></div>
@@ -47,7 +47,7 @@
                   </div>
                   <div class="world-map-menu-item">
                     <div class="btn btn-primary send-golems-button"
-                         (click)="openGolemSelection(golemSelectionModal)">Send Golems</div>
+                         (click)="openGolemSelection()">Send Golems</div>
                   </div>
                 </div>
               </div>
@@ -80,7 +80,79 @@
           <ngb-tab>
             <ng-template ngbTabTitle>Shop</ng-template>
             <ng-template ngbTabContent>
-              <div>TESTdwdw1</div>
+              <div class="shop-tab">
+                <div *ngFor="let supplier of game.getUnlockedSuppliers(); let i = index"
+                     class="supplier-panel"
+                     [ngStyle]="{'border': '1px solid ' + supplier.color1}">
+                  <div class="standard-text text-center mb-2"
+                       [ngStyle]="{'background-color': supplier.color1, 'color': supplier.color2}">
+                    {{supplier.name}}
+                  </div>
+                  <div class="standard-text">Amount: {{supplier.amount}}</div>
+                  <div class="standard-text">{{supplier.seedSeller.reference.name}}:</div>
+                  <div class="row m-0">
+                    <div class="col-md-2 text-center m-0 border-right"
+                         ngbTooltip="Select active sellers"
+                         placement="right"
+                         style="cursor: pointer;"
+                         (click)="openSupplierChangeModal(supplier, supplier.seedSeller)">
+                      <div class="clickable-button {{animationToggle ? 'clickable-button-animated' : ''}}">AS</div>
+                      <div>{{supplier.seedSeller.amount}}</div>
+                    </div>
+                    <div class="col-md-3 text-center m-0 border-left border-right"
+                         ngbTooltip="Total amount">
+                      <div>TOTAL</div>
+                      <div>{{supplier.seedSeller.reference.amount}}</div>
+                    </div>
+                    <div class="col-md-3 text-center m-0 border-right"
+                         ngbTooltip="Gained last minute">
+                      <div>GPM</div>
+                      <div>{{supplier.seedSeller.reference.oneMinAvg.toFixed(2)}}</div>
+                    </div>
+                    <div class="col-md-2 text-center m-0 border-right"
+                         ngbTooltip="Average Sold per minute">
+                      <div>SPM</div>
+                      <div>{{supplier.seedSeller.sellChance * supplier.seedSeller.amount}}</div>
+                    </div>
+                    <div class="col-md-2 text-center m-0 border-right"
+                         ngbTooltip="Sell chance">
+                      <div>SC</div>
+                      <div>{{supplier.seedSeller.sellChance * 100}}%</div>
+                    </div>
+                  </div>
+                  <div class="standard-text">{{supplier.plantSeller.reference.name}}:</div>
+                  <div class="row m-0">
+                    <div class="col-md-2 text-center m-0 border-right"
+                         ngbTooltip="Select active sellers"
+                         placement="right"
+                         style="cursor: pointer;"
+                         (click)="openSupplierChangeModal(supplier, supplier.plantSeller)">
+                      <div class="clickable-button {{animationToggle ? 'clickable-button-animated' : ''}}">AS</div>
+                      <div>{{supplier.plantSeller.amount}}</div>
+                    </div>
+                    <div class="col-md-3 text-center m-0 border-left border-right"
+                         ngbTooltip="Total amount">
+                      <div>TO</div>
+                      <div>{{supplier.plantSeller.reference.amount}}</div>
+                    </div>
+                    <div class="col-md-3 text-center m-0 border-right"
+                         ngbTooltip="Gained last minute">
+                      <div>PM</div>
+                      <div>{{supplier.plantSeller.reference.oneMinAvg.toFixed(2)}}</div>
+                    </div>
+                    <div class="col-md-2 text-center m-0 border-right"
+                         ngbTooltip="Average Sold per minute">
+                      <div>SPM</div>
+                      <div>{{supplier.plantSeller.sellChance * supplier.plantSeller.amount}}</div>
+                    </div>
+                    <div class="col-md-2 text-center m-0 border-right"
+                         ngbTooltip="Sell chance">
+                      <div>SC</div>
+                      <div>{{supplier.plantSeller.sellChance * 100}}%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </ng-template>
           </ngb-tab>
         </ngb-tabset>
@@ -92,14 +164,6 @@
           <div class="info-window-column f-c-normal">
             <div class="standard-text">Mana: {{game.currentMana}}/{{game.maxMana}} ({{game.manaRegen}}/s)</div>
             <div class="standard-text">Gold: {{game.gold}}</div>
-          </div>
-          <div class="info-window-column f-c-normal">
-            <div *ngFor="let seed of game.getUnlockedSeeds(); let i = index"
-                 class="standard-text">{{seed.name}}: {{seed.amount}}</div>
-          </div>
-          <div class="info-window-column f-c-normal">
-            <div *ngFor="let plant of game.getUnlockedPlants(); let i = index"
-                 class="standard-text">{{plant.name}}: {{plant.amount}}</div>
           </div>
         </div>
       </div>
@@ -114,7 +178,7 @@
         <div class="standard-text text-center">Send {{game.selectedGolem.name}} group</div>
       </div>
     </div>
-    <div class="row">
+    <div class="row mt-2">
       <div class="col-md-12">
         <div class="f-r-normal">
           <div class="standard-text mt-2 mr-3">Select golem:</div>
@@ -133,12 +197,12 @@
         <app-number-select (numberChanged)="addGolemAmount($event)" [numberValue]="golemAmount"></app-number-select>
       </div>
     </div>
-    <div class="row mt-2">
+    <div class="row mt-3">
       <div class="col-md-12">
         <div class="f-c-normal"
              style="height: 200px;">
-          <div class="standard-text mt-2 mr-3">Mana cost: {{game.selectedGolem.manaCost}}</div>
-          <div class="standard-text mt-2 mr-3">Gold cost: {{game.selectedGolem.goldCost}}</div>
+          <div class="standard-text mt-2 mr-3">Mana cost: {{game.selectedGolem.manaCost * golemAmount}}</div>
+          <div class="standard-text mt-2 mr-3">Gold cost: {{game.selectedGolem.goldCost * golemAmount}}</div>
         </div>
       </div>
     </div>
@@ -146,5 +210,26 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
     <button type="button" class="btn btn-primary" (click)="sendGolemGroup()">Send Golems</button>
+  </div>
+</ng-template>
+<ng-template #supplierChangeModal let-c="close">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="standard-text text-center">Select amount of {{game.selectedSupplier.name}}s for {{game.selectedSeller.reference.name}}</div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <app-number-select (numberChanged)="changeSellerAmount($event)"
+                           [title]="'Change selected amount of sellers'"
+                           [titleWidth]="406"
+                           [numberValue]="game.selectedSeller.amount">
+        </app-number-select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>

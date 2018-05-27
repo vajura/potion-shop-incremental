@@ -2,8 +2,9 @@ import { SeedInterface } from './interfaces/seed-interface';
 import { BaseClass } from './base';
 import { PlantIndex } from './enums/plant-index-helper';
 import { baseInterfaceCopy } from './interfaces/base-interface';
-import { PotInterface } from './interfaces/pot-interface';
-import { Game } from './game';
+import { game, Game } from './game';
+import { LinkedList } from './linked-list';
+import { avgCalcHelper } from '../helpers/avg-calc-helper';
 
 export class Seed extends BaseClass<SeedInterface> implements SeedInterface {
 
@@ -16,6 +17,10 @@ export class Seed extends BaseClass<SeedInterface> implements SeedInterface {
   public unlocked: boolean;
   public timeToGrow: number;
   public plantIndex: PlantIndex;
+  // avg calculation
+  public avgNumbers: LinkedList;
+  public oneMinAvg: number;
+  public runningAvg = 0;
 
   constructor(seed: SeedInterface, referenceIndex?: number) {
     super(seed, referenceIndex);
@@ -26,10 +31,13 @@ export class Seed extends BaseClass<SeedInterface> implements SeedInterface {
     this.reference = Game.seedCollection[referenceIndex];
     this.timeToGrow = data.timeToGrow;
     this.plantIndex = data.plantIndex;
+    this.avgNumbers = new LinkedList();
+    for (let a = 0; a < 60; a++) { this.avgNumbers.push(0); }
+    this.oneMinAvg = 0;
   }
 
   public gameLoop(): void {
-
+    avgCalcHelper(this);
   }
 
   public addAmount(amount: number): void {

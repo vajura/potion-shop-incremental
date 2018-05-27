@@ -57,11 +57,6 @@ button:focus,
   outline-style: none;
   box-shadow: 0 0 0 0 rgba(0,123,255,0);
 }
-.number-input {
-  width: 70px;
-  border: 1px solid #f8f9fa;
-  text-align: center;
-}
 .width100 {
   width: 100%;
 }
@@ -78,4 +73,14 @@ button:focus,
 .modal-content {
   border-radius: 0;
   box-shadow: 5px 5px 6px 0 rgba(0,0,0,0.59);
+}
+.clickable-button {
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: 400ms linear;
+}
+.clickable-button-animated {
+  background: #DDAAAA;
+  transition: 400ms linear;
 }

@@ -8,6 +8,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class NumberSelectComponent implements OnInit {
 
   @Input() numberValue = 1;
+  @Input() title = 'Select amount';
+  @Input() titleWidth = 126;
   @Output() numberChanged: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
