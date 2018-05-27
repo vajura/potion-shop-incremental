@@ -8,4 +8,5 @@ export interface PlantInterface extends BaseInterface {
   avgNumbers: LinkedList;
   oneMinAvg: number;
   runningAvg: number;
+  sellingPrice: number;
 }

@@ -21,6 +21,7 @@ export class Seed extends BaseClass<SeedInterface> implements SeedInterface {
   public avgNumbers: LinkedList;
   public oneMinAvg: number;
   public runningAvg = 0;
+  public sellingPrice;
 
   constructor(seed: SeedInterface, referenceIndex?: number) {
     super(seed, referenceIndex);
@@ -32,6 +33,7 @@ export class Seed extends BaseClass<SeedInterface> implements SeedInterface {
     this.timeToGrow = data.timeToGrow;
     this.plantIndex = data.plantIndex;
     this.avgNumbers = new LinkedList();
+    this.sellingPrice = data.sellingPrice;
     for (let a = 0; a < 60; a++) { this.avgNumbers.push(0); }
     this.oneMinAvg = 0;
   }

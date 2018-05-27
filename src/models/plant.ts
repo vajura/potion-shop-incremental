@@ -19,6 +19,7 @@ export class Plant extends BaseClass<PlantInterface> implements PlantInterface {
   public avgNumbers: LinkedList;
   public oneMinAvg: number;
   public runningAvg = 0;
+  public sellingPrice;
 
   constructor(plant: PlantInterface, referenceIndex?: number) {
     super(plant, referenceIndex);
@@ -29,6 +30,7 @@ export class Plant extends BaseClass<PlantInterface> implements PlantInterface {
     this.reference = Game.plantCollection[referenceIndex];
     this.seedIndex = data.seedIndex;
     this.avgNumbers = new LinkedList();
+    this.sellingPrice = data.sellingPrice;
     for (let a = 0; a < 60; a++) { this.avgNumbers.push(0); }
     this.oneMinAvg = 0;
   }

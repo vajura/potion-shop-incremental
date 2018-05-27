@@ -87,7 +87,7 @@ export function wildernessGenerator(): WildernessInterface[] {
           chanceToOccur: 5
         }
       ],
-      chanceToGetNothing: 100,
+      chanceToGetNothing: 1000,
       damagePerSec: 1,
       unlocked: true
     }
@@ -131,7 +131,8 @@ export function plantGenerator(): PlantInterface[] {
       unlocked: true,
       avgNumbers: undefined,
       oneMinAvg: 0,
-      runningAvg: 0
+      runningAvg: 0,
+      sellingPrice: 5,
     },
     {
       name: 'Viola',
@@ -143,7 +144,8 @@ export function plantGenerator(): PlantInterface[] {
       unlocked: true,
       avgNumbers: undefined,
       oneMinAvg: 0,
-      runningAvg: 0
+      runningAvg: 0,
+      sellingPrice: 25,
     }
   ];
 }
@@ -161,7 +163,8 @@ export function seedGenerator(): SeedInterface[] {
       unlocked: true,
       avgNumbers: undefined,
       oneMinAvg: 0,
-      runningAvg: 0
+      runningAvg: 0,
+      sellingPrice: 1,
     },
     {
       name: 'Viola seed',
@@ -174,7 +177,8 @@ export function seedGenerator(): SeedInterface[] {
       unlocked: true,
       avgNumbers: undefined,
       oneMinAvg: 0,
-      runningAvg: 0
+      runningAvg: 0,
+      sellingPrice: 5,
     }
   ];
 }

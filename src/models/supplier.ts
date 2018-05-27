@@ -41,7 +41,15 @@ export class Supplier extends BaseClass<SupplierInterface> implements SupplierIn
   }
 
   public gameLoop(): void {
-
+    const rand = Math.random();
+    if (rand < this.seedSeller.sellChance) {
+      let sellAmount = Math.floor(Math.random() * this.seedSeller.amount * 2);
+      if (sellAmount > 0) {
+        const seed = this.seedSeller.reference;
+        sellAmount = seed.removeAmount(sellAmount);
+        game.gold += sellAmount * seed.sellingPrice;
+      }
+    }
   }
 
   public addAmount(amount: number): void {
