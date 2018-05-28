@@ -23,9 +23,12 @@ export class AppComponent implements OnInit {
   private golemSelectionModalRef: NgbModalRef;
   @ViewChild('supplierChangeModal') supplierChangeModal: NgbModal;
   private supplierChangeModalRef: NgbModalRef;
+  @ViewChild('buySupplierModal') buySupplierModal: NgbModal;
+  private buySupplierModalRef: NgbModalRef;
 
   animationToggle = false;
   golemAmount = 1;
+  supplierBuyingAmount = 0;
 
   public game: Game;
 
@@ -54,6 +57,31 @@ export class AppComponent implements OnInit {
       size: 'lg',
       windowClass: 'dark-modal'
     });
+  }
+
+  openBuySuppliersModal(supplier: Supplier) {
+    this.game.selectedSupplier = supplier;
+    this.buySupplierModalRef = this.modalService.open(this.buySupplierModal, {
+      size: 'lg',
+      windowClass: 'dark-modal'
+    });
+  }
+
+  changeSupplierAmount(num: number) {
+    this.supplierBuyingAmount += num;
+    if (this.supplierBuyingAmount < 0) {
+      this.supplierBuyingAmount = 0;
+    }
+  }
+
+  buySuppliers() {
+    if (this.game.selectedSupplier.addAmount(this.supplierBuyingAmount)) {
+      this.supplierBuyingAmount = 0;
+      this.buySupplierModalRef.close();
+    } else {
+      this.notificationService.info('', 'You don\'t have enough resources.');
+    }
+    this.supplierBuyingAmount = 0;
   }
 
   openSupplierChangeModal(supplier: Supplier, seller: Seller<any>) {

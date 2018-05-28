@@ -88,7 +88,8 @@
                        [ngStyle]="{'background-color': supplier.color1, 'color': supplier.color2}">
                     {{supplier.name}}
                   </div>
-                  <div class="standard-text">Amount: {{supplier.amount}}</div>
+                  <div class="standard-text">Amount: {{supplier.amount}} / {{supplier.goldCost}} G</div>
+                  <button type="button" class="btn btn-primary my-2" (click)="openBuySuppliersModal(supplier)">Buy supplier</button>
                   <div class="standard-text">{{supplier.seedSeller.reference.name}}:</div>
                   <div class="row m-0">
                     <div class="col-md-2 text-center m-0 border-right"
@@ -115,9 +116,9 @@
                       <div>{{supplier.seedSeller.sellChance * supplier.seedSeller.amount}}</div>
                     </div>
                     <div class="col-md-2 text-center m-0 border-right"
-                         ngbTooltip="Sell chance">
-                      <div>SC</div>
-                      <div>{{supplier.seedSeller.sellChance * 100}}%</div>
+                         ngbTooltip="Sell Price">
+                      <div>PR</div>
+                      <div>{{supplier.seedSeller.reference.sellingPrice}}G</div>
                     </div>
                   </div>
                   <div class="standard-text">{{supplier.plantSeller.reference.name}}:</div>
@@ -132,12 +133,12 @@
                     </div>
                     <div class="col-md-3 text-center m-0 border-left border-right"
                          ngbTooltip="Total amount">
-                      <div>TO</div>
+                      <div>TOTAL</div>
                       <div>{{supplier.plantSeller.reference.amount}}</div>
                     </div>
                     <div class="col-md-3 text-center m-0 border-right"
                          ngbTooltip="Gained last minute">
-                      <div>PM</div>
+                      <div>GPM</div>
                       <div>{{supplier.plantSeller.reference.oneMinAvg.toFixed(2)}}</div>
                     </div>
                     <div class="col-md-2 text-center m-0 border-right"
@@ -146,9 +147,9 @@
                       <div>{{supplier.plantSeller.sellChance * supplier.plantSeller.amount}}</div>
                     </div>
                     <div class="col-md-2 text-center m-0 border-right"
-                         ngbTooltip="Sell chance">
-                      <div>SC</div>
-                      <div>{{supplier.plantSeller.sellChance * 100}}%</div>
+                         ngbTooltip="Sell Price">
+                      <div>PR</div>
+                      <div>{{supplier.plantSeller.reference.sellingPrice}}G</div>
                     </div>
                   </div>
                 </div>
@@ -194,15 +195,17 @@
     </div>
     <div class="row mt-2">
       <div class="col-md-12">
-        <app-number-select (numberChanged)="addGolemAmount($event)" [numberValue]="golemAmount"></app-number-select>
+        <app-number-select (numberChanged)="addGolemAmount($event)"
+                           [numberValue]="golemAmount">
+        </app-number-select>
       </div>
     </div>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="f-c-normal"
              style="height: 200px;">
-          <div class="standard-text mt-2 mr-3">Mana cost: {{game.selectedGolem.manaCost * golemAmount}}</div>
-          <div class="standard-text mt-2 mr-3">Gold cost: {{game.selectedGolem.goldCost * golemAmount}}</div>
+          <div class="standard-text mt-2 mr-3">Mana cost: {{game.selectedGolem.manaCost * golemAmount}} M</div>
+          <div class="standard-text mt-2 mr-3">Gold cost: {{game.selectedGolem.goldCost * golemAmount}} G</div>
         </div>
       </div>
     </div>
@@ -231,5 +234,33 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+<ng-template #buySupplierModal let-c="close">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="standard-text text-center">Buy {{game.selectedSupplier.name}}s</div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <app-number-select (numberChanged)="changeSupplierAmount($event)"
+                           [numberValue]="supplierBuyingAmount">
+        </app-number-select>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="f-c-normal"
+             style="height: 200px;">
+          <div class="standard-text mt-2 mr-3">Gold cost: {{game.selectedSupplier.goldCost * supplierBuyingAmount}} G</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-primary" (click)="buySuppliers()">Buy suppliers</button>
   </div>
 </ng-template>

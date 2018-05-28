@@ -9,6 +9,7 @@ export interface SupplierInterface extends BaseInterface {
   plantIndex: PlantIndex;
   seedSeller?: Seller<Seed>;
   plantSeller?: Seller<Plant>;
+  goldCost: number;
 }
 
 export interface Seller<T> {

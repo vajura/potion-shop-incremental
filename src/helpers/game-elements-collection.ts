@@ -21,13 +21,14 @@ export function supplierGenerator(): SupplierInterface[] {
       seedIndex: SeedIndex.RedRoseSeed,
       plantIndex: PlantIndex.RedRose,
       seedSeller: {
-        sellChance: 0.1,
+        sellChance: 0.2,
         amount: 0
       } as Seller<Seed>,
       plantSeller: {
         sellChance: 0.7,
         amount: 0
       } as Seller<Plant>,
+      goldCost: 6,
     },
     {
       name: 'Viola supplier',
@@ -46,6 +47,7 @@ export function supplierGenerator(): SupplierInterface[] {
         sellChance: 0.4,
         amount: 0
       } as Seller<Plant>,
+      goldCost: 80,
     }
   ];
 }
@@ -87,7 +89,7 @@ export function wildernessGenerator(): WildernessInterface[] {
           chanceToOccur: 5
         }
       ],
-      chanceToGetNothing: 1000,
+      chanceToGetNothing: 100,
       damagePerSec: 1,
       unlocked: true
     }
