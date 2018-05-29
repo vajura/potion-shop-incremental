@@ -90,66 +90,34 @@
                   </div>
                   <div class="standard-text">Amount: {{supplier.amount}} / {{supplier.goldCost}} G</div>
                   <button type="button" class="btn btn-primary my-2" (click)="openBuySuppliersModal(supplier)">Buy supplier</button>
-                  <div class="standard-text">{{supplier.seedSeller.reference.name}}:</div>
                   <div class="row m-0">
                     <div class="col-md-2 text-center m-0 border-right"
                          ngbTooltip="Select active sellers"
                          placement="right"
                          style="cursor: pointer;"
-                         (click)="openSupplierChangeModal(supplier, supplier.seedSeller)">
+                         (click)="openSupplierChangeModal(supplier)">
                       <div class="clickable-button {{animationToggle ? 'clickable-button-animated' : ''}}">AS</div>
-                      <div>{{supplier.seedSeller.amount}}</div>
+                      <div>{{supplier.activeAmount}}</div>
                     </div>
                     <div class="col-md-3 text-center m-0 border-left border-right"
                          ngbTooltip="Total amount">
                       <div>TOTAL</div>
-                      <div>{{supplier.seedSeller.reference.amount}}</div>
+                      <div>{{supplier.sellItem.amount}}</div>
                     </div>
                     <div class="col-md-3 text-center m-0 border-right"
                          ngbTooltip="Gained last minute">
                       <div>GPM</div>
-                      <div>{{supplier.seedSeller.reference.oneMinAvg.toFixed(2)}}</div>
+                      <div>{{supplier.sellItem.oneMinAvg.toFixed(2)}}</div>
                     </div>
                     <div class="col-md-2 text-center m-0 border-right"
                          ngbTooltip="Average Sold per minute">
                       <div>SPM</div>
-                      <div>{{supplier.seedSeller.sellChance * supplier.seedSeller.amount}}</div>
+                      <div>{{supplier.sellChance * supplier.activeAmount}}</div>
                     </div>
                     <div class="col-md-2 text-center m-0 border-right"
                          ngbTooltip="Sell Price">
                       <div>PR</div>
-                      <div>{{supplier.seedSeller.reference.sellingPrice}}G</div>
-                    </div>
-                  </div>
-                  <div class="standard-text">{{supplier.plantSeller.reference.name}}:</div>
-                  <div class="row m-0">
-                    <div class="col-md-2 text-center m-0 border-right"
-                         ngbTooltip="Select active sellers"
-                         placement="right"
-                         style="cursor: pointer;"
-                         (click)="openSupplierChangeModal(supplier, supplier.plantSeller)">
-                      <div class="clickable-button {{animationToggle ? 'clickable-button-animated' : ''}}">AS</div>
-                      <div>{{supplier.plantSeller.amount}}</div>
-                    </div>
-                    <div class="col-md-3 text-center m-0 border-left border-right"
-                         ngbTooltip="Total amount">
-                      <div>TOTAL</div>
-                      <div>{{supplier.plantSeller.reference.amount}}</div>
-                    </div>
-                    <div class="col-md-3 text-center m-0 border-right"
-                         ngbTooltip="Gained last minute">
-                      <div>GPM</div>
-                      <div>{{supplier.plantSeller.reference.oneMinAvg.toFixed(2)}}</div>
-                    </div>
-                    <div class="col-md-2 text-center m-0 border-right"
-                         ngbTooltip="Average Sold per minute">
-                      <div>SPM</div>
-                      <div>{{supplier.plantSeller.sellChance * supplier.plantSeller.amount}}</div>
-                    </div>
-                    <div class="col-md-2 text-center m-0 border-right"
-                         ngbTooltip="Sell Price">
-                      <div>PR</div>
-                      <div>{{supplier.plantSeller.reference.sellingPrice}}G</div>
+                      <div>{{supplier.sellItem.sellingPrice}}G</div>
                     </div>
                   </div>
                 </div>
@@ -219,15 +187,15 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-md-12">
-        <div class="standard-text text-center">Select amount of {{game.selectedSupplier.name}}s for {{game.selectedSeller.reference.name}}</div>
+        <div class="standard-text text-center">Select amount of {{game.selectedSupplier.name}}s</div>
       </div>
     </div>
     <div class="row mt-3">
       <div class="col-md-12">
-        <app-number-select (numberChanged)="changeSellerAmount($event)"
+        <app-number-select (numberChanged)="changeActiveSupplierAmount($event)"
                            [title]="'Change selected amount of sellers'"
                            [titleWidth]="406"
-                           [numberValue]="game.selectedSeller.amount">
+                           [numberValue]="game.selectedSupplier.activeAmount">
         </app-number-select>
       </div>
     </div>

@@ -18,7 +18,7 @@ import { Pot } from './pot';
 import { Wilderness } from './wilderness';
 import { Seed } from './seed';
 import { Golem } from './golem';
-import { Seller, SupplierInterface } from './interfaces/supplier-interface';
+import { SupplierInterface } from './interfaces/supplier-interface';
 import { Supplier } from './supplier';
 
 export let game: Game;
@@ -59,7 +59,6 @@ export class Game {
   // suppliers
   public suppliers: Supplier[] = [];
   public selectedSupplier: Supplier;
-  public selectedSeller: Seller<any>;
 
   // counters
   public elapsedCounter = 0;

@@ -5,7 +5,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from '../services/notification-service';
 import { Golem } from '../models/golem';
 import { Supplier } from '../models/supplier';
-import { Seller } from '../models/interfaces/supplier-interface';
 declare var kd;
 declare var $;
 
@@ -84,9 +83,8 @@ export class AppComponent implements OnInit {
     this.supplierBuyingAmount = 0;
   }
 
-  openSupplierChangeModal(supplier: Supplier, seller: Seller<any>) {
+  openSupplierChangeModal(supplier: Supplier) {
     this.game.selectedSupplier = supplier;
-    this.game.selectedSeller = seller;
     this.supplierChangeModalRef = this.modalService.open(this.supplierChangeModal, {
       size: 'lg',
       windowClass: 'dark-modal'
@@ -126,13 +124,13 @@ export class AppComponent implements OnInit {
     }
   }
 
-  changeSellerAmount (num: number) {
-    this.game.selectedSeller.amount += num;
-    if (this.game.selectedSeller.amount < 0) {
-      this.game.selectedSeller.amount = 0;
+  changeActiveSupplierAmount (num: number) {
+    this.game.selectedSupplier.activeAmount += num;
+    if (this.game.selectedSupplier.activeAmount < 0) {
+      this.game.selectedSupplier.activeAmount = 0;
     }
-    if (this.game.selectedSeller.amount > this.game.selectedSupplier.amount) {
-      this.game.selectedSeller.amount = this.game.selectedSupplier.amount;
+    if (this.game.selectedSupplier.activeAmount > this.game.selectedSupplier.amount) {
+      this.game.selectedSupplier.activeAmount = this.game.selectedSupplier.amount;
     }
   }
 
