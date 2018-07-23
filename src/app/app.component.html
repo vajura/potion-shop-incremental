@@ -28,7 +28,7 @@
                     </div>
                     <div class="panel-background">
                       <div class="standard-text mt-3">Golem groups
-                        {{game.selectedWilderness.golems.length}}/{{game.selectedWilderness.maxGolemGroups}}:</div>
+                        {{r(game.selectedWilderness.golems.length)}}/{{r(game.selectedWilderness.maxGolemGroups)}}:</div>
                       <div *ngIf="game.selectedWilderness.golems.length == 0">
                         <div class="standard-text text-center">None</div>
                       </div>
@@ -36,18 +36,19 @@
                            class="p-1 mt-1 golem-container"
                            [ngStyle]="{'background': golem.color1, 'color': golem.color2}">
                         <div class="fa fa-times golem-close-button" (click)="game.selectedWilderness.removeGolem(i)"></div>
-                        <div class="standard-text">{{golem.amount}} {{golem.name}}</div>
-                        <div class="standard-text">HP: {{golem.currentHp}}/{{golem.maxHp}}</div>
+                        <div class="standard-text">{{r(golem.amount)}} {{golem.name}}</div>
+                        <div class="standard-text">HP: {{r(golem.currentHp)}}/{{r(golem.maxHp)}}</div>
                       </div>
                     </div>
                     <div class="panel-background mt-2">
-                      <div class="standard-text">Mana cost: {{getTotalManaCost()}}</div>
-                      <div class="standard-text">Gold cost: {{getTotalGoldCost()}}</div>
+                      <div class="standard-text">Mana cost: {{r(getTotalManaCost())}}</div>
+                      <div class="standard-text">Gold cost: {{r(getTotalGoldCost())}}</div>
                     </div>
                   </div>
                   <div class="world-map-menu-item">
                     <div class="btn btn-primary send-golems-button"
-                         (click)="openGolemSelection()">Send Golems</div>
+                         (click)="openGolemSelection()">Send Golems
+                    </div>
                   </div>
                 </div>
               </div>
@@ -58,7 +59,9 @@
             <ng-template ngbTabContent>
               <div class="pot-tab">
                 <div class="header-pot-buttons">
-                  <div class="btn btn-success buy-pots-button">Buy Pots</div>
+                  <div class="btn btn-success buy-pots-button"
+                       (click)="openBuyPotModal()">Buy Pots
+                  </div>
                 </div>
                 <div *ngFor="let pot of game.getUnlockedPots()"
                      class="pot-row f-r-normal"
@@ -67,7 +70,7 @@
                        [ngStyle]="{'border-right': '2px solid ' + pot.color1}">
                     <div class="width100">
                       <div class="standard-text text-center">{{pot.name}}</div>
-                      <div class="standard-text">Free/Total: {{pot.freePots}}/{{pot.amount}}</div>
+                      <div class="standard-text">Free/Total: {{r(pot.freePots)}}/{{r(pot.amount)}}</div>
                     </div>
                     <div class="plant-button-container">
                       <div class="btn btn-primary plant-button">Plant seed</div>
@@ -88,7 +91,7 @@
                        [ngStyle]="{'background-color': supplier.color1, 'color': supplier.color2}">
                     {{supplier.name}}
                   </div>
-                  <div class="standard-text">Amount: {{supplier.amount}} / {{supplier.goldCost}} G</div>
+                  <div class="standard-text">Amount: {{r(supplier.amount)}} / {{r(supplier.goldCost)}} G</div>
                   <button type="button" class="btn btn-primary my-2" (click)="openBuySuppliersModal(supplier)">Buy supplier</button>
                   <div class="row m-0">
                     <div class="col-md-2 text-center m-0 border-right"
@@ -97,27 +100,27 @@
                          style="cursor: pointer;"
                          (click)="openSupplierChangeModal(supplier)">
                       <div class="clickable-button {{animationToggle ? 'clickable-button-animated' : ''}}">AS</div>
-                      <div>{{supplier.activeAmount}}</div>
+                      <div>{{r(supplier.activeAmount)}}</div>
                     </div>
                     <div class="col-md-3 text-center m-0 border-left border-right"
                          ngbTooltip="Total amount">
                       <div>TOTAL</div>
-                      <div>{{supplier.sellItem.amount}}</div>
+                      <div>{{r(supplier.sellItem.amount)}}</div>
                     </div>
                     <div class="col-md-3 text-center m-0 border-right"
                          ngbTooltip="Gained last minute">
                       <div>GPM</div>
-                      <div>{{supplier.sellItem.oneMinAvg.toFixed(2)}}</div>
+                      <div>{{r(supplier.sellItem.oneMinAvg, 100)}}</div>
                     </div>
                     <div class="col-md-2 text-center m-0 border-right"
                          ngbTooltip="Average Sold per minute">
                       <div>SPM</div>
-                      <div>{{supplier.sellChance * supplier.activeAmount}}</div>
+                      <div>{{r(supplier.sellChance * supplier.activeAmount)}}</div>
                     </div>
                     <div class="col-md-2 text-center m-0 border-right"
                          ngbTooltip="Sell Price">
                       <div>PR</div>
-                      <div>{{supplier.sellItem.sellingPrice}}G</div>
+                      <div>{{r(supplier.sellItem.sellingPrice)}}G</div>
                     </div>
                   </div>
                 </div>
@@ -131,8 +134,8 @@
       <div class="col-md-12 p-0">
         <div class="f-r-normal">
           <div class="info-window-column f-c-normal">
-            <div class="standard-text">Mana: {{game.currentMana}}/{{game.maxMana}} ({{game.manaRegen}}/s)</div>
-            <div class="standard-text">Gold: {{game.gold}}</div>
+            <div class="standard-text">Mana: {{r(game.currentMana)}}/{{r(game.maxMana)}} ({{r(game.manaRegen)}}/s)</div>
+            <div class="standard-text">Gold: {{r(game.gold)}}</div>
           </div>
         </div>
       </div>
@@ -153,7 +156,7 @@
           <div class="standard-text mt-2 mr-3">Select golem:</div>
           <button *ngFor="let golem of game.getUnlockedGolems(); let i = index"
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary selection-modal-button"
                   [ngStyle]="{'background': golem.color1, 'color': golem.color2, 'border': 'none'}"
                   (click)="game.selectedGolem = golem">
             {{golem.name}}
@@ -164,7 +167,7 @@
     <div class="row mt-2">
       <div class="col-md-12">
         <app-number-select (numberChanged)="addGolemAmount($event)"
-                           [numberValue]="golemAmount">
+                           [numberValue]="r(golemAmount)">
         </app-number-select>
       </div>
     </div>
@@ -172,8 +175,8 @@
       <div class="col-md-12">
         <div class="f-c-normal"
              style="height: 200px;">
-          <div class="standard-text mt-2 mr-3">Mana cost: {{game.selectedGolem.manaCost * golemAmount}} M</div>
-          <div class="standard-text mt-2 mr-3">Gold cost: {{game.selectedGolem.goldCost * golemAmount}} G</div>
+          <div class="standard-text mt-2 mr-3">Mana cost: {{r(game.selectedGolem.manaCost * golemAmount)}} M</div>
+          <div class="standard-text mt-2 mr-3">Gold cost: {{r(game.selectedGolem.goldCost * golemAmount)}} G</div>
         </div>
       </div>
     </div>
@@ -195,7 +198,7 @@
         <app-number-select (numberChanged)="changeActiveSupplierAmount($event)"
                            [title]="'Change selected amount of sellers'"
                            [titleWidth]="406"
-                           [numberValue]="game.selectedSupplier.activeAmount">
+                           [numberValue]="r(game.selectedSupplier.activeAmount)">
         </app-number-select>
       </div>
     </div>
@@ -214,7 +217,7 @@
     <div class="row mt-3">
       <div class="col-md-12">
         <app-number-select (numberChanged)="changeSupplierAmount($event)"
-                           [numberValue]="supplierBuyingAmount">
+                           [numberValue]="r(supplierBuyingAmount)">
         </app-number-select>
       </div>
     </div>
@@ -222,7 +225,7 @@
       <div class="col-md-12">
         <div class="f-c-normal"
              style="height: 200px;">
-          <div class="standard-text mt-2 mr-3">Gold cost: {{game.selectedSupplier.goldCost * supplierBuyingAmount}} G</div>
+          <div class="standard-text mt-2 mr-3">Gold cost: {{r(game.selectedSupplier.goldCost * supplierBuyingAmount)}} G</div>
         </div>
       </div>
     </div>
@@ -230,5 +233,48 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
     <button type="button" class="btn btn-primary" (click)="buySuppliers()">Buy suppliers</button>
+  </div>
+</ng-template>
+<ng-template #buyPotModal let-c="close">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="standard-text text-center">Buy {{game.selectedPot.name}} pots</div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <div class="f-r-normal">
+          <div class="standard-text mt-2 mr-3">Select pot:</div>
+          <button *ngFor="let pot of game.getUnlockedPots(); let i = index"
+                  type="button"
+                  class="btn btn-primary selection-modal-button"
+                  [ngStyle]="{'background': pot.color1, 'color': pot.color2, 'border': 'none'}"
+                  (click)="game.selectedPot = pot">
+            {{pot.name}}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <app-number-select (numberChanged)="addPotAmount($event)"
+                           [numberValue]="r(potBuyingAmount)">
+        </app-number-select>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="f-c-normal"
+             style="height: 200px;">
+          <div class="standard-text mt-2 mr-3">Mana cost: {{r(game.selectedPot.goldCost * potBuyingAmount)}} M</div>
+          <div class="standard-text mt-2 mr-3">Gold cost: {{r(game.selectedPot.manaCost * potBuyingAmount)}} G</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-primary" (click)="buyPots()">Send Golems</button>
   </div>
 </ng-template>

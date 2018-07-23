@@ -25,6 +25,7 @@ export let game: Game;
 
 export class Game {
 
+
   public static potCollection: PotInterface[];
   public static potsI: any[] = [];
   public static plantCollection: PlantInterface[];
@@ -39,11 +40,11 @@ export class Game {
   public static supplierI: any[] = [];
 
   // mana
-  public maxMana = 100;
-  public currentMana = 100;
+  public maxMana = 10000;
+  public currentMana = 10000;
   public manaRegen = 1;
   // gold
-  public gold = 0;
+  public gold = 100000;
   // wilderness
   public wilderness: Wilderness[] = [];
   public selectedWilderness: Wilderness;
@@ -52,6 +53,7 @@ export class Game {
   public selectedGolem: Golem;
   // pots
   public pots: Pot[] = [];
+  public selectedPot: Pot;
   // plants
   public plants: Plant[] = [];
   // seeds
@@ -62,6 +64,7 @@ export class Game {
 
   // counters
   public elapsedCounter = 0;
+
 
   constructor(
     public cdr: ChangeDetectorRef,
@@ -101,6 +104,18 @@ export class Game {
     }
   }
 
+  checkAndRemoveManaAndGold(goldAmount: number, manaAmount: number) {
+    if (
+      this.checkAndRemoveGold(goldAmount, false) &&
+      this.checkAndRemoveMana(manaAmount, false)
+    ) {
+      this.checkAndRemoveGold(goldAmount);
+      this.checkAndRemoveMana(manaAmount);
+      return true;
+    } else {
+      return false;
+    }
+  }
   checkAndRemoveGold(amount: number, remove = true): boolean {
     if (this.gold >= amount) {
       if (remove) {
@@ -170,6 +185,7 @@ export class Game {
     }
     this.selectedWilderness = this.wilderness[0];
     this.selectedGolem = this.golems[0];
+    this.selectedPot = this.pots[0];
   }
 
   getUnlockedWilderness(): Wilderness[] {

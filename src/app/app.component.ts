@@ -5,8 +5,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from '../services/notification-service';
 import { Golem } from '../models/golem';
 import { Supplier } from '../models/supplier';
-declare var kd;
-declare var $;
 
 @Component({
   selector: 'app-root',
@@ -24,9 +22,12 @@ export class AppComponent implements OnInit {
   private supplierChangeModalRef: NgbModalRef;
   @ViewChild('buySupplierModal') buySupplierModal: NgbModal;
   private buySupplierModalRef: NgbModalRef;
+  @ViewChild('buyPotModal') buyPotModal: NgbModal;
+  private buyPotModalRef: NgbModalRef;
 
   animationToggle = false;
   golemAmount = 1;
+  potBuyingAmount = 1;
   supplierBuyingAmount = 0;
 
   public game: Game;
@@ -40,9 +41,8 @@ export class AppComponent implements OnInit {
     setInterval(() => {
       this.animationToggle = !this.animationToggle;
     }, 1000);
-    setInterval(() => {
-      kd.tick();
-    }, 25);
+
+
     this.game = new Game(this.cdr, this.notificationService);
     /*this.htmlContainer = $('html');
     this.mainContainer = $('#main-container');
@@ -61,6 +61,13 @@ export class AppComponent implements OnInit {
   openBuySuppliersModal(supplier: Supplier) {
     this.game.selectedSupplier = supplier;
     this.buySupplierModalRef = this.modalService.open(this.buySupplierModal, {
+      size: 'lg',
+      windowClass: 'dark-modal'
+    });
+  }
+
+  openBuyPotModal() {
+    this.buyPotModalRef = this.modalService.open(this.buyPotModal, {
       size: 'lg',
       windowClass: 'dark-modal'
     });
@@ -101,6 +108,16 @@ export class AppComponent implements OnInit {
     }
   }
 
+  buyPots() {
+    if (this.game.selectedPot.addAmount(this.potBuyingAmount)) {
+      this.potBuyingAmount = 0;
+      this.buyPotModalRef.close();
+    } else {
+      this.notificationService.info('', 'You don\'t have enough resources.');
+    }
+    this.potBuyingAmount = 0;
+  }
+
   getTotalManaCost() {
     let manaCost = 0;
     for (let a = 0; a < this.game.selectedWilderness.golems.length; a++) {
@@ -124,6 +141,13 @@ export class AppComponent implements OnInit {
     }
   }
 
+  addPotAmount(num: number) {
+    this.potBuyingAmount += num;
+    if (this.potBuyingAmount < 1) {
+      this.potBuyingAmount = 1;
+    }
+  }
+
   changeActiveSupplierAmount (num: number) {
     this.game.selectedSupplier.activeAmount += num;
     if (this.game.selectedSupplier.activeAmount < 0) {
@@ -136,5 +160,9 @@ export class AppComponent implements OnInit {
 
   getSeed(index: number): SeedInterface {
     return Game.seedCollection[index];
+  }
+
+  r(value: number, precision = 10) {
+    return Math.round(value * precision) / precision;
   }
 }

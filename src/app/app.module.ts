@@ -7,22 +7,24 @@ import { FormsModule } from '@angular/forms';
 import { NotificationService } from '../services/notification-service';
 import { NotificationComponent } from '../components/notification/notification.component';
 import { NumberSelectComponent } from '../components/number-select/number-select.component';
+import { MultiplierService } from '../services/multiplier-service';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NotificationComponent,
-    NumberSelectComponent
+    NumberSelectComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
   ],
   providers: [
-    NotificationService
+    NotificationService,
+    MultiplierService,
   ],
   bootstrap: [AppComponent]
 })

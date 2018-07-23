@@ -4,4 +4,6 @@ import { SeedInterface } from './seed-interface';
 export interface PotInterface<SeedModel = SeedInterface> extends BaseInterface {
   freePots: number;
   plantedSeeds: SeedModel[];
+  goldCost: number;
+  manaCost: number;
 }

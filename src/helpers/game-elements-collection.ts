@@ -25,6 +25,19 @@ export function supplierGenerator(): SupplierInterface[] {
       goldCost: 5
     },
     {
+      name: 'Red Rose supplier',
+      tier: 1,
+      amount: 0,
+      color1: '#CC4444',
+      color2: 'black',
+      unlocked: true,
+      itemType: 'plant',
+      referenceIndex: PlantIndex.RedRose,
+      sellChance: 0.1,
+      activeAmount: 0,
+      goldCost: 12
+    },
+    {
       name: 'Viola supplier',
       tier: 1,
       amount: 0,
@@ -93,6 +106,8 @@ export function potGenerator(): PotInterface[] {
       color2: 'black',
       amount: 0,
       freePots: 0,
+      goldCost: 40,
+      manaCost: 90,
       plantedSeeds: [],
       unlocked: true
     },
@@ -103,6 +118,8 @@ export function potGenerator(): PotInterface[] {
       color2: 'black',
       amount: 0,
       freePots: 0,
+      goldCost: 450,
+      manaCost: 220,
       plantedSeeds: [],
       unlocked: true
     }

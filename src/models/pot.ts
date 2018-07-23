@@ -17,6 +17,8 @@ export class Pot extends BaseClass<PotInterface> implements PotInterface<Seed> {
   public color1: string;
   public color2: string;
   public unlocked: boolean;
+  public goldCost: number;
+  public manaCost: number;
 
   constructor(pot: PotInterface, referenceIndex?: number) {
     super(pot, referenceIndex);
@@ -26,6 +28,8 @@ export class Pot extends BaseClass<PotInterface> implements PotInterface<Seed> {
     baseInterfaceCopy(this, data);
     this.reference = Game.potCollection[referenceIndex];
     this.freePots = data.freePots;
+    this.goldCost = data.goldCost;
+    this.manaCost = data.manaCost;
     this.plantedSeeds = [];
   }
 
@@ -61,5 +65,22 @@ export class Pot extends BaseClass<PotInterface> implements PotInterface<Seed> {
     } else {
       return undefined;
     }
+  }
+
+  public addAmount(amount: number): number {
+    if (game.checkAndRemoveManaAndGold(this.goldCost * amount, this.manaCost * amount) {
+      this.amount += amount;
+      return this.amount;
+    } else {
+      return undefined;
+    }
+  }
+
+  public removeAmount(amount: number): number {
+    if (this.amount < amount) {
+      amount = this.amount;
+    }
+    this.amount -= amount;
+    return amount;
   }
 }
