@@ -60,7 +60,8 @@
               <div class="pot-tab">
                 <div class="header-pot-buttons">
                   <div class="btn btn-success buy-pots-button"
-                       (click)="openBuyPotModal()">Buy Pots
+                       (click)="openBuyPotModal()">
+                    Buy Pots
                   </div>
                 </div>
                 <div *ngFor="let pot of game.getUnlockedPots()"
@@ -73,7 +74,23 @@
                       <div class="standard-text">Free/Total: {{r(pot.freePots)}}/{{r(pot.amount)}}</div>
                     </div>
                     <div class="plant-button-container">
-                      <div class="btn btn-primary plant-button">Plant seed</div>
+                      <div class="btn btn-primary plant-button"
+                           (click)="openPlantSeedModal(pot)">
+                        Plant seed
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div *ngFor="let seed of pot.plantedSeeds">
+                      <div class="pot-box-description f-c-between">
+                        <div class="width100">
+                          <div class="standard-text text-center"
+                               [ngStyle]="{'background': seed.color1, 'color': seed.color2}">
+                            {{seed.name}}
+                          </div>
+                          <div class="standard-text text-center">Amount: {{seed.amount}}</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -275,6 +292,40 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
-    <button type="button" class="btn btn-primary" (click)="buyPots()">Send Golems</button>
+    <button type="button" class="btn btn-primary" (click)="buyPots()">Buy pots</button>
+  </div>
+</ng-template>
+<ng-template #plantSeedModal let-c="close">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="standard-text text-center">Plant {{game.selectedSeed.name}} pots</div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <div class="f-r-normal">
+          <div class="standard-text mt-2 mr-3">Select seed:</div>
+          <button *ngFor="let seed of game.getUnlockedSeeds(game.selectedPot.tier); let i = index"
+                  type="button"
+                  class="btn btn-primary selection-modal-button"
+                  [ngStyle]="{'background': seed.color1, 'color': seed.color2, 'border': 'none'}"
+                  (click)="game.selectedSeed = seed">
+            {{seed.name}}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <app-number-select (numberChanged)="changePlantSeedAmount($event)"
+                           [numberValue]="r(seedPlantAmount)">
+        </app-number-select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-primary" (click)="plantSeeds()">Plant seeds</button>
   </div>
 </ng-template>

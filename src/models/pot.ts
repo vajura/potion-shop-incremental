@@ -4,7 +4,6 @@ import { Seed } from './seed';
 import { baseInterfaceCopy } from './interfaces/base-interface';
 import { game, Game } from './game';
 import { SeedInterface } from './interfaces/seed-interface';
-import { PlantInterface } from './interfaces/plant-interface';
 
 export class Pot extends BaseClass<PotInterface> implements PotInterface<Seed> {
 
@@ -68,7 +67,7 @@ export class Pot extends BaseClass<PotInterface> implements PotInterface<Seed> {
   }
 
   public addAmount(amount: number): number {
-    if (game.checkAndRemoveManaAndGold(this.goldCost * amount, this.manaCost * amount) {
+    if (game.checkAndRemoveManaAndGold(this.goldCost * amount, this.manaCost * amount)) {
       this.amount += amount;
       return this.amount;
     } else {

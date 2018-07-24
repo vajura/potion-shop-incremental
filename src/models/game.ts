@@ -40,11 +40,11 @@ export class Game {
   public static supplierI: any[] = [];
 
   // mana
-  public maxMana = 10000;
-  public currentMana = 10000;
+  public maxMana = 100;
+  public currentMana = 100;
   public manaRegen = 1;
   // gold
-  public gold = 100000;
+  public gold = 20;
   // wilderness
   public wilderness: Wilderness[] = [];
   public selectedWilderness: Wilderness;
@@ -58,6 +58,7 @@ export class Game {
   public plants: Plant[] = [];
   // seeds
   public seeds: Seed[] = [];
+  public selectedSeed: Seed;
   // suppliers
   public suppliers: Supplier[] = [];
   public selectedSupplier: Supplier;
@@ -186,6 +187,7 @@ export class Game {
     this.selectedWilderness = this.wilderness[0];
     this.selectedGolem = this.golems[0];
     this.selectedPot = this.pots[0];
+    this.selectedSeed = this.seeds[0];
   }
 
   getUnlockedWilderness(): Wilderness[] {
@@ -199,11 +201,11 @@ export class Game {
     return unlockedElements;
   }
 
-  getUnlockedSeeds(): Seed[] {
+  getUnlockedSeeds(tier = -1): Seed[] {
     const unlockedElements: Seed[] = [];
 
     for (let a = 0; a < this.seeds.length; a++) {
-      if (this.seeds[a].unlocked) {
+      if (this.seeds[a].unlocked && tier > -1 && this.seeds[a].tier <= tier) {
         unlockedElements.push(this.seeds[a]);
       }
     }

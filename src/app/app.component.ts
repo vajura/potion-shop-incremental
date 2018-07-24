@@ -5,6 +5,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from '../services/notification-service';
 import { Golem } from '../models/golem';
 import { Supplier } from '../models/supplier';
+import { Pot } from '../models/pot';
+import { Seed } from '../models/seed';
 
 @Component({
   selector: 'app-root',
@@ -24,11 +26,14 @@ export class AppComponent implements OnInit {
   private buySupplierModalRef: NgbModalRef;
   @ViewChild('buyPotModal') buyPotModal: NgbModal;
   private buyPotModalRef: NgbModalRef;
+  @ViewChild('plantSeedModal') plantSeedModal: NgbModal;
+  private plantSeedModalRef: NgbModalRef;
 
   animationToggle = false;
   golemAmount = 1;
   potBuyingAmount = 1;
   supplierBuyingAmount = 0;
+  seedPlantAmount = 0;
 
   public game: Game;
 
@@ -73,10 +78,31 @@ export class AppComponent implements OnInit {
     });
   }
 
+  openPlantSeedModal(pot: Pot) {
+    this.game.selectedPot = pot;
+    this.plantSeedModalRef = this.modalService.open(this.plantSeedModal, {
+      size: 'lg',
+      windowClass: 'dark-modal'
+    });
+  }
+
   changeSupplierAmount(num: number) {
     this.supplierBuyingAmount += num;
     if (this.supplierBuyingAmount < 0) {
       this.supplierBuyingAmount = 0;
+    }
+  }
+
+  changePlantSeedAmount(num: number) {
+    this.seedPlantAmount += num;
+    if (this.seedPlantAmount < 0) {
+      this.seedPlantAmount = 0;
+    }
+    if (this.seedPlantAmount > this.game.selectedPot.amount) {
+      this.seedPlantAmount = this.game.selectedPot.amount;
+    }
+    if (this.seedPlantAmount > this.game.getSeedFromName(this.game.selectedSeed.name).amount) {
+      this.seedPlantAmount = this.game.getSeedFromName(this.game.selectedSeed.name).amount;
     }
   }
 
@@ -98,6 +124,16 @@ export class AppComponent implements OnInit {
     });
   }
 
+  plantSeeds() {
+    const seed: Seed = new Seed(Game.seedCollection[Game.seedsI[this.game.selectedSeed.name]]);
+    seed.amount = this.seedPlantAmount;
+    if (!this.game.selectedPot.addSeedToPot(seed)) {
+      this.notificationService.info('', 'You don\'t have enough resources.');
+    } else {
+      this.plantSeedModalRef.close();
+    }
+  }
+
   sendGolemGroup() {
     const golem: Golem = new Golem(this.game.selectedGolem.reference);
     golem.amount = this.golemAmount;
@@ -110,12 +146,12 @@ export class AppComponent implements OnInit {
 
   buyPots() {
     if (this.game.selectedPot.addAmount(this.potBuyingAmount)) {
-      this.potBuyingAmount = 0;
+      this.potBuyingAmount = 1;
       this.buyPotModalRef.close();
     } else {
       this.notificationService.info('', 'You don\'t have enough resources.');
     }
-    this.potBuyingAmount = 0;
+    this.potBuyingAmount = 1;
   }
 
   getTotalManaCost() {
